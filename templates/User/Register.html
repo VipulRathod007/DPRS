@@ -18,11 +18,7 @@
         </div>
     </div>
 </div>
-{% if messages %}
-{% for message in messages %}
-<script>M.toast({ html: "{{message}}", classes: 'blue rounded', displayLength: 2000 });</script>
-{% endfor %}
-{% endif %}
+
 <div id="register" class="container my-3">
     <h1 style="text-align: center;">Registration</h1>
     <form class="" action="{% url 'user-registration' %}" method="POST">
@@ -45,11 +41,7 @@
         <div class="mb-3">
             <label for="exampleInputPassword2" class="form-label">Confirm Password</label>
             <input type="password" class="form-control" id="exampleInputPassword2" name="pass2" required>
-        <!-- </div>
-        <div class="mb-3 form-check">
-            <input type="checkbox" class="form-check-input" id="exampleCheck1" name="remember">
-            <label class="form-check-label" for="exampleCheck1">Remember Me!</label>
-        </div> -->
+        </div>
         <button type="submit" class="btn btn-primary">Submit</button>
     </form>
 </div>
@@ -58,7 +50,7 @@
     function validate() {
         let pass1 = document.getElementById("exampleInputPassword1");
         let pass2 = document.getElementById("exampleInputPassword2");
-
+        console.log("Hi");
         if (pass1 === pass2) {
             ;
         }

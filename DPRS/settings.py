@@ -119,8 +119,8 @@ USE_TZ = True
 # EMAIL Config
 EMAIL_HOST = 'smtp.gmail.net'
 EMAIL_PORT = 465
-EMAIL_HOST_USER = 'vipuldrathod1458@gmail.com'
-EMAIL_HOST_PASSWORD = 'Vipul@6430'
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 
 # Static files (CSS, JavaScript, Images)

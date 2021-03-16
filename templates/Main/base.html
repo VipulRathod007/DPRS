@@ -86,13 +86,14 @@
                                         </li>
                                     </ul>
                                 </li>
-
-                                <li><a href="departments.html" class=" nav-link">Departments</a></li>
                                 <li><a href="{% url 'start-about' %}" class="nav-link active">About Us</a></li>
-
-                                <li><a href="blog.html" class="nav-link">Blog</a></li>
                                 <li><a href="{% url 'start-contact' %}" class="nav-link">Contact</a></li>
-                                <li><a href="{% url 'user-login' %}" class="nav-link">Login</a></li>
+                                {% if user != None and user.email != None %}
+                                    <li><a href="{% url 'user-profile' %}" class="nav-link">Profile</a></li>
+                                    <li><a href="{% url 'user-logout' %}" class="nav-link">Logout</a></li>
+                                {% else %}
+                                    <li><a href="{% url 'user-login' %}" class="nav-link">Login</a></li>
+                                {% endif %}
                             </ul>
                         </nav>
                     </div>
@@ -109,7 +110,11 @@
 
 
         <!-- MAIN -->
-
+        {% if messages %}
+        {% for message in messages %}
+        <script>M.toast({ html: "{{message}}", classes: 'blue rounded', displayLength: 2000 });</script>
+        {% endfor %}
+        {% endif %}
         {% block body %}
         {% endblock body %}
         <footer class="site-footer bg-primary">
