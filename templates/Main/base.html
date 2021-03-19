@@ -88,7 +88,7 @@
                                 </li>
                                 <li><a href="{% url 'start-about' %}" class="nav-link active">About Us</a></li>
                                 <li><a href="{% url 'start-contact' %}" class="nav-link">Contact</a></li>
-                                {% if user != None and user.email != None %}
+                                {% if "current-user" in request.session %}
                                     <li><a href="{% url 'user-profile' %}" class="nav-link">Profile</a></li>
                                     <li><a href="{% url 'user-logout' %}" class="nav-link">Logout</a></li>
                                 {% else %}

@@ -6,7 +6,7 @@ context = {
     "title": "DPRS",
     "author": "The Avengers",
     "contact": "+12 7578665",
-    "mail": "info@dprs.com",
+    "mail": "contact.dprs.web@gmail.com",
     "address": "Hi-Tech City, Bengalore, India"
 }
 
@@ -27,7 +27,7 @@ def contact(request):
         subject = request.POST["subject"]
         message = request.POST["message"]
         send_mail(subject + " from " + name, message, mail,
-                  ["vipuldrathod1458@gmail.com"])
+                  ["contact.dprs.web@gmail.com"])
         context['message'] = "Mail Sent Succesfully!"
         return render(request, 'Main/contact.html', context=context)
     else:

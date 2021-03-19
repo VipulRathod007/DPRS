@@ -1,0 +1,18 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="slide-item overlay"
+    style="background-image: url('{% static 'images/prof_banner.jpg' %}'); background-size: cover; background-position: center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 align-self-center text-center mx-auto">
+                <h1 class="heading mb-5">Register With Us</h1>
+                <p><a href="#register" class="btn btn-primary">Get started</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

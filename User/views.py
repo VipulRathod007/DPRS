@@ -66,7 +66,7 @@ def logout(request):
 
 
 def profile(request):
-    if "current-user" in request.session and context['user'] is not None:
+    if "current-user" in request.session or context['user'] is not None:
         return render(request, 'User/Profile.html', context=context)
     else:
         return redirect("/user/login/")
