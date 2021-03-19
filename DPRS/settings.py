@@ -120,7 +120,7 @@ USE_TZ = True
 EMAIL_HOST = 'smtp.gmail.net'
 EMAIL_PORT = 465
 EMAIL_HOST_USER = 'contact.dprs.web@gmail.com'
-EMAIL_HOST_PASSWORD = 'sha_256_of("ILY3000")'
+EMAIL_HOST_PASSWORD = ''
 EMAIL_USE_TLS = True
 
 # Static files (CSS, JavaScript, Images)
