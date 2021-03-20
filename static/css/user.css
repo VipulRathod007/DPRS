@@ -1,0 +1,152 @@
+
+/*===============================
+              User Profile
+===================================*/
+body{
+    overflow-x: hidden;
+}
+
+.user-form h2{
+    font-family: "Open Sans", sans-serif;
+    font-size: 34px;
+    font-weight: 600;
+    line-height: 38px;
+    color: #6255a5;
+    padding: 30px  0px 20px 30px;   
+    margin-left: 7%;
+}
+ .form-control{
+    border: 1px solid #d1d1d1;
+    border-radius: 3px;
+    width: 100%;
+     height: 50px;
+}
+.control-label{
+   margin-left: -20px;
+    color: #333333 !important;
+    font-family: "Open Sans",sans-serif;
+    font-size: 18px;
+    font-weight: 500;
+}
+/* phone number */
+.user-form .marginright{
+    margin-right: 50%;
+}
+.user-form .ex-phone .InputEmail1{
+     width:113%!important;
+}
+/* To remove gaps */
+.user-form .phone{
+    padding: 0 !important;
+    margin: 0px !important;
+}
+.user-form .ex-phone{
+      margin-left: -10% !important;
+}
+/*To set calander position*/
+ .space-remove{
+    padding-left: 5%;
+    padding-right: 5%; 
+}
+.user-form .control-label{
+    padding-top: 10px;
+    padding-left: 20px;
+}
+/*For Place Holder*/
+.form-control::placeholder{
+    font-family: "Open Sans",sans-serif;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    color: #8a8a8a;
+}
+/*For Select Feild */
+.inputselect{
+         background: url("{% static 'images/down-arrow.png' %}") no-repeat !important ;
+        appearance:none;
+    background-position: 99% 50%; 
+}
+select:enabled{
+    color:#8a8a8a;
+}
+/* For Date Of Birth */
+.user-form Input[type=date]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+    z-index: 888;  
+}
+ input[type=date]::-webkit-datetime-edit-text {
+    -webkit-appearance: none;
+    display: none;
+}
+ input[type=date]::-webkit-datetime-edit-month-field{
+    -webkit-appearance: none;
+    display: none;
+}
+input[type=date]::-webkit-datetime-edit-day-field {
+    -webkit-appearance: none;
+    display: none;
+}
+ input[type=date]::-webkit-datetime-edit-year-field {
+    -webkit-appearance: none;
+    display: none;
+}
+ .user-form .wrapper{
+    position: relative;
+}
+ .user-form .wrapper img{
+    position: absolute;
+     top: 15px !important;
+  /* left: 570px !important; */
+     left: 94% !important;
+  /*  top: 35%;
+     right: 4%;*/
+}
+.user-form .wrapper .form-control{
+    padding-left: 15px;
+}
+/* Date Of Birth Ends */
+/*To Set An upload-Image */
+.upload-pic Input[type=file] {
+    height: 110px;
+    position: relative;
+    color: transparent;
+}
+Input[type=file]::-webkit-file-upload-button {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -40%);
+    transform: translate(-50%, -40%);
+    height: 90px;
+    width: 120px;
+    z-index: 999;
+    opacity: 0;
+}
+.upload-pic .mypic {
+    position: absolute;
+    top: 55%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -40%);
+    transform: translate(-50%, -40%);
+}
+.upload-pic .mypic h6 {
+    color: #ced4da !important;
+    font-size: 18px;
+}
+.text-description{
+    height: 110px!important;
+}
+/* For Button */
+ .btn-primary{
+    width: 150px;
+     height: 50px;
+     font-size: 20px;
+     color: #fff;
+     font-family: "Open Sans",sans-serif;
+     font-weight: 600;
+     border-radius: 3px;
+    margin-top:15px;
+    margin-bottom: 60px;
+    margin-left: 0px;
+     background-color:  #6255a5;
+}

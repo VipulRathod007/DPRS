@@ -10,9 +10,9 @@
     <form class="" action="{% url 'user-login' %}" method="POST">
         {% csrf_token %}
         <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Health ID</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="id" required>
-            <div id="emailHelp" class="form-text">Health ID will be avialable in your Health Card issued at the time of Registration.</div>
+            <label for="exampleInputEmail1" class="form-label">Health Mail</label>
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
+            <div id="emailHelp" class="form-text">Health Mail will be avialable in your Health Card issued at the time of Registration.</div>
         </div>
         <div class="mb-3">
             <label for="exampleInputPassword2" class="form-label">Password</label>
