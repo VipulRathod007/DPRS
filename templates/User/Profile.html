@@ -13,13 +13,13 @@
 
 {% block body %}
 
-{% if userData.fname != "" %}
+{% if user.fname != "" %}
 <div class="slide-item overlay"
-  style="background-image: url('{{userData.profilePic}}'); background-size: cover; background-position: center">
+  style="background-image: url('{{user.profilePic}}'); background-size: cover; background-position: center">
   <div class="container">
     <div class="row">
       <div class="col-lg-6 align-self-center text-center mx-auto">
-        <h1 class="heading mb-5">Welcome {{userData.fname}} {{userData.lname}}</h1>
+        <h1 class="heading mb-5">Welcome {{user.fname}} {{user.lname}}</h1>
         <p><a href="#register" class="btn btn-primary font-mod">Start</a></p>
       </div>
     </div>
@@ -38,7 +38,7 @@
   </div>
 </div>
 {% endif %}
-{% if not userData.basicFlag %}
+{% if not user.basicFlag %}
 <!-- User Profile -->
 <!--User Details -->
 <section class="user-form" id="register">
@@ -51,14 +51,24 @@
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
             <label class="control-label">First Name<span class="required"> *</span></label>
-            <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter your first name" required>
+            {% if user.fname == "" %}
+            <input type="text" class="form-control" id="fname" name="fname" placeholder="Enter your first name"
+              required>
+            {% else %}
+            <input type="text" class="form-control" id="fname" name="fname" value="{{user.fname}}" required>
+            {% endif %}
           </div>
         </div>
         <!-- Last Name -->
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
             <label class=" control-label">Last Name<span class="required"> *</span></label>
-            <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter your Surname" required>
+            {% if user.lname == "" %}
+            <input type="text" class="form-control" id="lname" name="lname" placeholder="Enter your first name"
+              required>
+            {% else %}
+            <input type="text" class="form-control" id="lname" name="lname" value="{{user.lname}}" required>
+            {% endif %}
           </div>
         </div>
         <!-- Date Of Birth-->
@@ -66,8 +76,13 @@
           <div class="form-group">
             <label class=" control-label">Date Of Birth</label>
             <div class="wrapper">
+              {% if user.dob == "" %}
               <input type="text" class="form-control InputEmail1 " placeholder="Enter your date of birth"
                 onfocus="(this.type='date')" onblur="(this.type='text')" id="dob" name="dob" required>
+              {% else %}
+              <input type="text" class="form-control InputEmail1 " value="{{user.dob}}" onfocus="(this.type='date')"
+                onblur="(this.type='text')" id="dob" name="dob" required>
+              {% endif %}
               <img src="{% static 'images/calendar.png' %}" alt="calender">
               <!--     <i class="fa fa-calendar" aria-hidden="true"></i>  -->
             </div>
@@ -78,10 +93,30 @@
           <div class="form-group">
             <label class=" control-label" for="gender">Gender</label>
             <select class="form-control inputselect" name="gender" required>
+              {% if user.gender == "" %}
               <option value="-1">Select your gender</option>
               <option value="Male">Male</option>
               <option value="Female">Female</option>
               <option value="Other">Other</option>
+              {% endif %}
+              {% if user.gender == "Male" %}
+              <option value="-1">Select your gender</option>
+              <option value="Male" selected>Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+              {% endif %}
+              {% if user.gender == "Female" %}
+              <option value="-1">Select your gender</option>
+              <option value="Male">Male</option>
+              <option value="Female" selected>Female</option>
+              <option value="Other">Other</option>
+              {% endif %}
+              {% if user.gender == "Other" %}
+              <option value="-1">Select your gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other" selected>Other</option>
+              {% endif %}
             </select>
           </div>
         </div>
@@ -99,8 +134,13 @@
                   </div>
                 </div>
                 <div class="col-md-7 col-sm-7 col-9 col-xl-9 col-lg-8 col-xs-7 phone ex-phone">
+                  {% if user.contact == "" %}
                   <input type="text" class="form-control InputEmail1" id="contact" name="contact"
                     placeholder="Enter your phone number" required>
+                  {% else %}
+                  <input type="text" class="form-control InputEmail1" id="contact" name="contact"
+                    value="{{user.contact}}" required>
+                  {% endif %}
                 </div>
               </div>
             </div>
@@ -110,8 +150,12 @@
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
             <label class="control-label">Adhar Card Number<span class="required"> *</span></label>
-            <input type="text" class="form-control" id="aadhar" name="aadhar"
-              placeholder="Enter your Adhar Card Number" required>
+            {% if user.aadhar == "" %}
+            <input type="text" class="form-control" id="aadhar" name="aadhar" placeholder="Enter your Adhar Card Number"
+              required>
+            {% else %}
+            <input type="text" class="form-control" id="aadhar" name="aadhar" value="{{user.aadhar}}" required>
+            {% endif %}
           </div>
         </div>
         <!--Upload Image -->
@@ -134,7 +178,7 @@
             <div class="upload-pic">
               <label class="control-label" for="InputEmail1">Profile Picture *</label>
               <input type="file" class="form-control InputEmail1" aria-describedby="emailHelp" name="profilePic"
-                id="aadharPic" required>
+                id="profilePic">
               <div class="mypic text-center">
                 <img class="img-fluid" src="{% static 'images/upload.png' %}">
                 <h6>Upload a picture</h6>
@@ -150,47 +194,77 @@
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
             <label class="control-label">Address Line 1<span class="required"> *</span></label>
-            <input type="text" class="form-control" id="address1" name="address1" placeholder="Enter your address" required>
+            {% if user.address == "" %}
+            <input type="text" class="form-control" id="address1" name="address1" placeholder="Enter your address"
+              required>
+            {% else %}
+            <input type="text" class="form-control" id="address1" name="address1" value="{{user.address}}" required>
+            {% endif %}
           </div>
         </div>
         <!-- Address Line 2 -->
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
             <label class=" control-label">Address Line 2</label>
-            <input type="text" class="form-control" id="address2" name="address2" placeholder="Enter your address" required>
+            <input type="text" class="form-control" id="address2" name="address2" placeholder="Enter your address">
           </div>
         </div>
         <!-- City -->
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
             <label class="control-label">City<span class="required"> *</span></label>
+            {% if user.city == "" %}
             <input type="text" class="form-control" id="city" name="city" placeholder="Enter your city" required>
+            {% else %}
+            <input type="text" class="form-control" id="city" name="city" value="{{user.city}}" required>
+            {% endif %}
           </div>
         </div>
         <!-- State -->
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
             <label class="control-label">State<span class="required"> *</span></label>
+            {% if user.state == "" %}
             <input type="text" class="form-control" id="state" name="state" placeholder="Enter your state" required>
+            {% else %}
+            <input type="text" class="form-control" id="state" name="state" value="{{user.state}}" required>
+            {% endif %}
           </div>
         </div>
         <!-- ZipCode -->
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
             <label class="control-label">ZipCode<span class="required"> *</span></label>
-            <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Enter your zipcode" required>
+            {% if user.zipcode == "" %}
+            <input type="text" class="form-control" id="zipcode" name="zipcode" placeholder="Enter your zipcode"
+              required>
+            {% else %}
+            <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{user.zipcode}}" required>
+            {% endif %}
           </div>
         </div>
         <!-- Country -->
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
             <label class="control-label">Country<span class="required"> *</span></label>
+            {% if user.country == "" %}
             <select class="form-control inputselect" id="country" name="country" required>
               <option value="-1">Select your country</option>
               {% for v in countries %}
               <option value="{{v}}">{{v}}</option>
               {% endfor %}
             </select>
+            {% else %}
+            <select class="form-control inputselect" id="country" name="country" required>
+              <option value="-1">Select your country</option>
+              {% for v in countries %}
+              {% if user.country == v %}
+              <option value="{{v}}" selected>{{v}}</option>
+              {% endif %}
+              <option value="{{v}}">{{v}}</option>
+              {% endfor %}
+            </select>
+            {% endif %}
           </div>
         </div>
       </div>
@@ -202,6 +276,8 @@
           <button type="submit" class="btn btn-primary text-uppercase text-center">submit</button>
         </div>
       </div>
+    </div>
+
     </div>
     <!-- Button Ends -->
   </form>

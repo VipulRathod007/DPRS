@@ -1,0 +1,73 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/user.css'%}">
+<link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css'%}">
+<style>
+    .font-mod {
+        font-size: 12.5pt;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<div class="slide-item overlay"
+    style="background-image: url('{{user.profilePic}}'); background-size: cover; background-position: center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 align-self-center text-center mx-auto">
+                <h1 class="heading mb-5">Welcome {{user.fname}} {{user.lname}}</h1>
+                <p><a href="#register" class="btn btn-primary font-mod">Start</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+<section class="user-form" id="register">
+    <form action="{% url 'user-profilePicEdit' %}" class="space-remove" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container">
+            <div class="row">
+                <!--Upload Image -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="upload-pic">
+                            <label class="control-label" for="InputEmail1">Upload Profile Picture *</label>
+                            <input type="file" class="form-control InputEmail1" aria-describedby="emailHelp"
+                                name="profilePic" id="profilePic" required>
+                            <div class="mypic text-center">
+                                <img class="img-fluid" src="{% static 'images/upload.png' %}">
+                                <h6>Upload a picture</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Upload Image -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="upload-pic">
+                            {% if user.profilePic != "" %}
+                            <div class="mypic text-center mb-4">
+                                <img class="img-fluid" src="{{user.profilePic}}">
+                                <h6>Uploaded Profile Picture</h6>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Button -->
+        <div class="container">
+            <div class="row userprofile-btn">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <button type="submit" class="btn btn-primary text-uppercase text-center">submit</button>
+                </div>
+            </div>
+        </div>
+        <!-- Button Ends -->
+    </form>
+</section>
+
+{% endblock %}

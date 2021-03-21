@@ -10,6 +10,9 @@ with open('config.json', 'r') as file:
     context = jsonFile['context']
 
 
+editFlag = False
+
+
 def register(request):
     context['tabTitle'] = "Register"
     if request.method == "POST":
@@ -25,7 +28,7 @@ def register(request):
             context['user'] = tempUser
             context['tabTitle'] = 'Home'
             messages.success(request, f"New account created: {User.objects.filter(email=mail).first().email}")
-            return redirect("/")
+            return redirect("/user/profile/")
         else:
             context['user'] = None
             context['tabTitle'] = 'Register'
@@ -33,7 +36,7 @@ def register(request):
             return redirect("/user/register/")
     elif request.method == "GET":
         if 'current-user' in request.session:
-            return redirect("/")
+            return redirect("/user/profile/")
         else:
             return render(request, 'User/Register.html', context=context)
 
@@ -42,7 +45,7 @@ def login(request):
     context['tabTitle'] = "Login"
     if request.method == "GET":
         if 'current-user' in request.session:
-            return redirect("/")
+            return redirect("/user/profile/")
         else:
             return render(request, 'User/Login.html', context=context)
     elif request.method == "POST":
@@ -53,7 +56,7 @@ def login(request):
             request.session['current-user'] = matchUser.id
             context['user'] = matchUser
             context['tabTitle'] = 'Home'
-            return redirect("/")
+            return redirect("/user/profile/")
         else:
             messages.warning(request, f"Invalid Credentials!")
             return redirect("/user/login/")
@@ -64,17 +67,95 @@ def logout(request):
         context['tabTitle'] = "Home"
         request.session.pop('current-user')
         context['user'] = None
+        context['editFlag'] = False
         messages.success(request, f"Logged Out Successfully!")
         return redirect("/")
     else:
         return redirect("/")
 
 
+def profileEdit(request):
+    if 'current-user' in request.session:
+        context['tabTitle'] = "Edit Profile"
+        context['editFlag'] = True
+        global editFlag
+        editFlag = True
+        userObj = User.objects.filter(id=request.session['current-user']).first()
+        userObj.basicFlag = False
+        userObj.save()
+        return redirect("/user/profile/")
+    else:
+        return redirect("/")
+
+
+def profilePicEdit(request):
+    if 'current-user' in request.session:
+        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+            if request.method == "GET":
+                context['tabTitle'] = "Edit Profile Picture"
+                context['user'] = User.objects.filter(id=request.session['current-user']).first()
+                return render(request, "User/EditProfilePic.html", context=context)
+            elif request.method == "POST":
+                fs = FileSystemStorage()
+                userObj = User.objects.filter(id=request.session['current-user']).first()
+                profilePic = request.FILES['profilePic']
+                profilePicName = fs.save("PicP" + str(userObj.id) + profilePic.name, profilePic)
+                userObj.profilePic = ".." + fs.url(profilePicName)
+                userObj.save()
+                messages.success(request, f"New Profile Picture saved successfully!")
+                return redirect("/user/profile/")
+        else:
+            return redirect("/user/profile/")
+    else:
+        return redirect("/user/login/")
+
+
+def aadharPicEdit(request):
+    if 'current-user' in request.session:
+        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+            if request.method == "GET":
+                context['tabTitle'] = "Edit Aadhar Copy"
+                context['user'] = User.objects.filter(id=request.session['current-user']).first()
+                return render(request, "User/EditAadharPic.html", context=context)
+            elif request.method == "POST":
+                fs = FileSystemStorage()
+                userObj = User.objects.filter(id=request.session['current-user']).first()
+                aadharPic = request.FILES['aadharPic']
+                aadharPicName = fs.save("PicA" + str(userObj.id) + aadharPic.name, aadharPic)
+                userObj.aadharPic = ".." + fs.url(aadharPicName)
+                userObj.save()
+                messages.success(request, f"New Aadhar Copy saved successfully!")
+                return redirect("/user/profile/")
+        else:
+            return redirect("/user/profile/")
+    else:
+        return redirect("/user/login/")
+
+
+def profileEdit(request):
+    if 'current-user' in request.session:
+        context['tabTitle'] = "Edit Profile"
+        context['editFlag'] = True
+        global editFlag
+        editFlag = True
+        userObj = User.objects.filter(id=request.session['current-user']).first()
+        userObj.basicFlag = False
+        userObj.save()
+        return redirect("/user/profile/")
+    else:
+        return redirect("/")
+
+
 def profile(request):
-    context['tabTitle'] = "Profile"
+    flag = None
+    global editFlag
+    if 'editFlag' in context and context['editFlag']:
+        context['tabTitle'] = "Edit Profile"
+    else:
+        context['tabTitle'] = "Profile"
     if request.method == 'GET':
         if "current-user" in request.session:
-            context['userData'] = User.objects.filter(id=request.session['current-user']).first()
+            context['user'] = User.objects.filter(id=request.session['current-user']).first()
             return render(request, 'User/Profile.html', context=context)
         else:
             messages.warning(request, f"Login to check Profile Page!")
@@ -89,8 +170,15 @@ def profile(request):
             gender = request.POST['gender']
             contact = request.POST['contact']
             aadhar = request.POST['aadhar']
-            aadharPic = request.FILES['aadharPic']
-            profilePic = request.FILES['profilePic']
+            try:
+                aadharPic = request.FILES['aadharPic']
+                profilePic = request.FILES['profilePic']
+            except:
+                if userObj.fname == "":
+                    messages.success(request, f"Upload Profile picture and Aadhar Card Copy.")
+                    return redirect("/user/profile/")
+                else:
+                    flag = True
             address1 = request.POST['address1']
             address2 = request.POST['address2']
             city = request.POST['city']
@@ -105,10 +193,11 @@ def profile(request):
             userObj.aadhar = aadhar
             # userObj.aadharPic = "PicA" + str(userObj.id) + aadharPic.name
             # userObj.profilePic = "PicP" + str(userObj.id) + profilePic.name
-            aadharPicName = fs.save("PicA" + str(userObj.id) + aadharPic.name, aadharPic)
-            profilePicName = fs.save("PicP" + str(userObj.id) + profilePic.name, profilePic)
-            userObj.aadharPic = ".." + fs.url(aadharPicName)
-            userObj.profilePic = ".." + fs.url(profilePicName)
+            if not flag:
+                aadharPicName = fs.save("PicA" + str(userObj.id) + aadharPic.name, aadharPic)
+                profilePicName = fs.save("PicP" + str(userObj.id) + profilePic.name, profilePic)
+                userObj.aadharPic = ".." + fs.url(aadharPicName)
+                userObj.profilePic = ".." + fs.url(profilePicName)
             userObj.address = address1 + " " + address2
             userObj.city = city
             userObj.state = state
@@ -117,8 +206,7 @@ def profile(request):
             userObj.basicFlag = True
             # aadharPic.save(os.path.join(context['uploadTo'], userObj.aadharPic))
             # profilePic.save(os.path.join(context['uploadTo'], userObj.profilePic))
-            if int(gender) < 0:
-                pass
             userObj.save()
+            flag = None
             messages.success(request, f"Your details saved successfully!")
             return redirect("/user/profile/")
