@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" /> 
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0 ,user-scalable=no">
+    <!-- Title -->
+    <title>User Details</title>
+    <!-- Google Link For Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans
+             :wght@300;400;600;700&display=swap" rel="stylesheet">
+     <!-- Fontawesome(For icons)-->
+    <link rel="stylesheet" href="../personal_details/font-awesome/css/font-awesome.min.css">         
+    <!--bootstrap.css file-->
+    <link rel="stylesheet" href="../personal_details/bootstrap/bootstrap.min.css">
+    <!-- Custom Css file-->
+    <link rel="stylesheet" href="../personal_details/user.css">
+  
+</head>
+<body data-spy="scroll" data-target=".navbar" data-offset="65">
+<!-- Header -->
+  <header>
+        <nav class="navbar navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="site-nav-wrapper">
+                    <!--For LOGO -->
+                    
+                    <!--Main Menu -->
+                    <div class="cointer">
+                        <div class="collapse navbar-collapse">
+                            <ul class="nav navbar-nav  pull-right">
+                                
+                                <li><a class="smooth-scroll brdr" href="#">Home</a></li>
+                                 <li><a class="smooth-scroll brdr" href="#">Services</a></li>
+                                <li><a class="smooth-scroll brdr" href="#">FAQ</a></li>
+                                <li><a class="smooth-scroll brdr" href="#">Contact Us</a></li>
+                                <li><a class="smooth-scroll" href="#">
+                                    <div class="userprofile-user-icon">
+                                <img src="../personal_details/User-Profile/user.jpg" class="img-fluid img-circle" alt="User">
+                            </div>
+                                </a></li>
+                                <li><a class="smooth-scroll" href="#">
+                                     <button type="submit" class="btn text-center" id="mynavbtn">Logout</button> 
+                                </a></li>
+                            </ul>
+                        </div>
+                    </div>
+                
+                    
+                </div>
+            </div>
+        </nav>
+    </header>
+
+<!-- Header Ends -->
+<!-- User Profile -->
+<section id="user-profile" >
+   <div class="container"> 
+   <div class="row">
+    
+    <div class="top-img">
+      <div class="col-md-12 col-sm-12 col-xl-12">
+        <img src="../personal_details/User-Profile/banner-with-overlay.jpg" alt="user-profile" class="img-responsive">
+        <span class="top-center"><h2 class="top-head">User Profile</h2></span>
+        </div>
+        </div>
+       </div>
+    </div>
+    </section>
+    <!--User Details -->
+    <section class="user-form  ">
+       <form action="" class="space-remove" >
+        <h2>Basic Details Of User</h2>
+        <div class="container">
+            <div class="row">
+               <!-- First Name -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                     <div class="form-group">
+                      <label class="control-label">First Name</label>
+                      <input type="text" class="form-control" id="fname">
+                    </div>
+                </div>
+                <!-- Last Name -->
+                 <div class="col-md-6  col-sm-6 col-xs-12">
+                     <div class="form-group">
+                      <label class=" control-label">Last Name</label>
+                      <input type="text" class="form-control" id="fname">
+                    </div>
+                 </div>
+                 <!-- Email -->
+                  <div class="col-md-6  col-sm-6 col-xs-12">
+                      <div class="form-group">
+                      <label class="control-label">Email</label>
+                      <input type="text" class="form-control" id="fname">
+                    </div>
+                  </div>
+                  <!-- Date Of Birth-->
+                   <div class="col-md-6  col-sm-6 col-xs-12">
+                   <div class="form-group">
+                       <label class=" control-label">Date Of Birth</label>
+                         <div class="wrapper">
+                        
+                     <input type="text" class="form-control InputEmail1 " onfocus="(this.type='date')" onblur="(this.type='text')">
+                         <img src="../personal_details/User-Profile/calendar.png" alt="calender"> 
+                    <!--     <i class="fa fa-calendar" aria-hidden="true"></i>  -->
+                      </div>
+                      
+                      </div>
+                   </div>
+                   <!-- Gender -->
+                    <div class="col-md-6 col-sm-6 col-xs-12">
+                       <div class="form-group">
+                      <label class=" control-label" for="gender">Gender</label>
+                      <input type="text" class="form-control" id="fname">   
+                  </div>
+                 </div>
+                    <!-- Phone Number -->
+                     <div class="col-md-6  col-sm-6 col-xs-12">
+                        <div class="form-group">
+                      <label class="control-label">Phone Number</label>
+                      <div class="container">
+                      <div class="row">
+                     <div class="col-md-5 col-sm-5 col-3 col-xl-3 col-lg-4 col-xs-5  phone">
+                      <div class="marginright">
+                        <input type="text" class="form-control" id="fname"> 
+                  </div>
+                   </div>
+                <div class="col-md-7 col-sm-7 col-9 col-xl-9 col-lg-8 col-xs-7 phone ex-phone">
+             <input type="text" class="form-control InputEmail1">
+                          </div>
+                         </div>
+                        </div>
+                    </div>          
+                  </div>
+                     <!--Upload Image -->
+                 <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                       <div class="upload-pic">
+                       <label class="control-label" for="InputEmail1">Upload Adhar card</label>
+                      <input type="file" class="form-control InputEmail1" aria-describedby="emailHelp">
+                      <div class="mypic text-center">
+                         <img class="img-fluid" src="../personal_details/User-Profile/upload.png">
+                               <h6>Upload a picture</h6>
+                              </div>
+                             </div>
+                     </div>
+                 </div>
+                 <!--Adhar card Number -->
+                  <div class="col-md-6  col-sm-6 col-xs-12">
+                      <div class="form-group">
+                      <label class="control-label">Adhar Card Number</label>
+                      <input type="text" class="form-control" id="fname">
+                    </div>
+                  </div>
+            </div>
+        </div>
+        </form>
+</section>
+<!-- User Details Ends -->
+<!-- User Address Details  -->
+<section class="user-form">
+       <form action="" class="space-remove">
+        <h2>Address Details Of User</h2>
+        <div class="container">
+            <div class="row">
+               <!-- Address Line 1 -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                     <div class="form-group">
+                      <label class="control-label">Address Line 1</label>
+                      <input type="text" class="form-control" id="address" >
+                    </div>
+                </div>
+                <!-- Address Line 2 -->
+                 <div class="col-md-6  col-sm-6 col-xs-12">
+                     <div class="form-group">
+                      <label class=" control-label">Address Line 2</label>
+                      <input type="text" class="form-control" id="address" >
+                    </div>
+                 </div>
+                 <!-- City -->
+                  <div class="col-md-6  col-sm-6 col-xs-12">
+                      <div class="form-group">
+                      <label class="control-label">City</label>
+                      <input type="text" class="form-control" id="city" >
+                    </div>
+                  </div>
+                  <!-- State -->
+                    <div class="col-md-6  col-sm-6 col-xs-12">
+                      <div class="form-group">
+                      <label class="control-label">State</label>
+                      <input type="text" class="form-control" id="state" >
+                    </div>
+                  </div>
+                   <!-- ZipCode -->
+                    <div class="col-md-6  col-sm-6 col-xs-12">
+                      <div class="form-group">
+                      <label class="control-label">ZipCode</label>
+                      <input type="text" class="form-control" id="zipcode" >
+                    </div>
+                  </div>
+                    <!-- Country -->
+                     <div class="col-md-6  col-sm-6 col-xs-12">
+                      <div class="form-group">
+                      <label class="control-label">Country</label>
+            
+                        <input type="text" class="form-control" id="fname"> 
+                    </div>
+                  </div>
+                   
+             </div>          
+          </div>    
+        </form>
+</section>
+<!-- User Address Details Ends -->
+
+<!-- University & College Information -->
+     <section class="user-form">
+       <form action="" class="space-remove">
+        <h2>Family Details of User</h2>
+        <div class="container">
+            <div class="row">
+                    <!-- University -->
+                    <div class="col-md-6  col-sm-6 col-xs-12">
+                      <div class="form-group">
+                      <label class="control-label">Father Name</label>
+                    <input type="text" class="form-control" id="university">
+                    </div>
+                  </div>
+                   <!-- College -->
+                    <div class="col-md-6  col-sm-6 col-xs-12">
+                      <div class="form-group">
+                      <label class="control-label">Mother Name</label>
+                      <input type="text" class="form-control" id="college">
+                    </div>
+                  </div>
+                   <!-- Phone Number -->
+                     <div class="col-md-6  col-sm-6 col-xs-12">
+                        <div class="form-group">
+                      <label class="control-label">Phone Number of Parents</label>
+                      <div class="container">
+                      <div class="row">
+                     <div class="col-md-5 col-sm-5 col-3 col-xl-3 col-lg-4 col-xs-5  phone">
+                      <div class="marginright">
+                        <input type="text" class="form-control" id="fname"> 
+                  </div>
+                   </div>
+                <div class="col-md-7 col-sm-7 col-9 col-xl-9 col-lg-8 col-xs-7 phone ex-phone">
+             <input type="text" class="form-control InputEmail1">
+                          </div>
+                         </div>
+                        </div>
+                    </div>          
+                  </div>
+           </div>          
+          </div>    
+        </form>
+</section>
+<!-- Univercity & College Information Ends -->
+<!-- Button -->
+             
+
+<section class="user-form">
+    <form action="" class="space-remove">
+     <h2>Hospital Details of User</h2>
+     <div class="container">
+         <div class="row">
+                 
+                 <div class="col-md-6  col-sm-6 col-xs-12">
+                   <div class="form-group">
+                   <label class="control-label">Admit Date</label>
+                 <input type="text" class="form-control" id="university">
+                 </div>
+               </div>
+                
+                 <div class="col-md-6  col-sm-6 col-xs-12">
+                   <div class="form-group">
+                   <label class="control-label">Leave Date</label>
+                   <input type="text" class="form-control" id="college">
+                 </div>
+               </div>
+
+
+               <div class="col-md-6  col-sm-6 col-xs-12">
+                <div class="form-group">
+                <label class="control-label">Blood Group</label>
+                <input type="text" class="form-control" id="college">
+                </div>
+               </div>
+                
+               <div class="col-md-6  col-sm-6 col-xs-12">
+                <div class="form-group">
+                <label class="control-label">Medical Records</label>
+                <input type="text" class="form-control" id="college">
+                </div>
+               </div>
+
+                  
+               <div class="col-md-6  col-sm-6 col-xs-12">
+                <div class="form-group">
+                <label class="control-label">Mediclaim Information</label>
+                <input type="text" class="form-control" id="college">
+                </div>
+               </div>
+
+
+               <div class="col-md-6  col-sm-6 col-xs-12">
+                <div class="form-group">
+                <label class="control-label">Laboratory Reports</label>
+                <input type="text" class="form-control" id="college">
+                </div>
+               </div>
+
+
+               <div class="col-md-6  col-sm-6 col-xs-12">
+                <div class="form-group">
+                <label class="control-label">Pharmacy Modules</label>
+                <input type="text" class="form-control" id="college">
+                </div>
+               </div>
+
+
+               <div class="col-md-6  col-sm-6 col-xs-12">
+                <div class="form-group">
+                <label class="control-label">Billing Modules</label>
+                <input type="text" class="form-control" id="college">
+                </div>
+               </div>
+
+
+               <div class="col-md-6  col-sm-6 col-xs-12">
+                <div class="form-group">
+                <label class="control-label">NGO's Information</label>
+                <input type="text" class="form-control" id="college">
+                </div>
+               </div>
+
+        </div>          
+       </div>    
+     </form>
+</section>
+
+<!-- Button Ends -->
+<!-- footer -->
+    <footer>
+        <div class="end">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6 col-12 col-sm-6 col-xs-6">
+                        <p>
+                            DPRS Fully Customized Web-Application
+                        </p>
+                    </div>
+                    <div class="col-md-6 col-12 col-sm-6 col-xs-6 text-right">
+                        <ul class="social-list">
+                            <li><a href="#"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- footer ends -->
+
+
+</body>
+</html>
