@@ -24,17 +24,18 @@
         </div>
     </div>
 </div>
-<section class="user-form" id="register">
+<section class="user-form mt-5" id="register">
+    <h2 class="container">Upload New Aadhar Copy</h2>
+    <hr class="container">
     <form action="{% url 'user-aadharPicEdit' %}" class="space-remove" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
-        <h2>Basic Details</h2>
         <div class="container">
-            <div class="row">
+            <div class="row mt-4">
                 <!--Upload Image -->
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
                         <div class="upload-pic">
-                            <label class="control-label" for="InputEmail1">Upload Adhar card*</label>
+                            <label class="control-label" for="aadharPic">Adhar card*</label>
                             <input type="file" class="form-control InputEmail1" aria-describedby="emailHelp"
                                 name="aadharPic" id="aadharPic" required>
                             <div class="mypic text-center">

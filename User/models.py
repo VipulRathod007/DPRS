@@ -20,4 +20,7 @@ class User(models.Model):
     basicFlag = models.BooleanField()
 
     def __str__(self):
-        return self.fname
+        if self.fname == "":
+            return self.email
+        else:
+            return self.fname

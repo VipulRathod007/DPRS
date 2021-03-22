@@ -24,16 +24,18 @@
         </div>
     </div>
 </div>
-<section class="user-form" id="register">
+<section class="user-form mt-5" id="register">
+    <h2 class="container">Upload New Profile Picture</h2>
+    <hr class="container">
     <form action="{% url 'user-profilePicEdit' %}" class="space-remove" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="container">
-            <div class="row">
+            <div class="row mt-4">
                 <!--Upload Image -->
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
                         <div class="upload-pic">
-                            <label class="control-label" for="InputEmail1">Upload Profile Picture *</label>
+                            <label class="control-label" for="profilePic">Profile Picture *</label>
                             <input type="file" class="form-control InputEmail1" aria-describedby="emailHelp"
                                 name="profilePic" id="profilePic" required>
                             <div class="mypic text-center">

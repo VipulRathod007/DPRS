@@ -92,7 +92,7 @@
         <div class="col-md-6 col-sm-6 col-xs-12">
           <div class="form-group">
             <label class=" control-label" for="gender">Gender</label>
-            <select class="form-control inputselect" name="gender" required>
+            <select class="form-control inputselect" id="gender" name="gender" required>
               {% if user.gender == "" %}
               <option value="-1">Select your gender</option>
               <option value="Male">Male</option>
@@ -158,6 +158,7 @@
             {% endif %}
           </div>
         </div>
+        {% if user.aadharPic == "" %}
         <!--Upload Image -->
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
@@ -172,11 +173,13 @@
             </div>
           </div>
         </div>
+        {% endif %}
+        {% if user.profilePic == "" %}
         <!--Upload Image -->
         <div class="col-md-6  col-sm-6 col-xs-12">
           <div class="form-group">
             <div class="upload-pic">
-              <label class="control-label" for="InputEmail1">Profile Picture *</label>
+              <label class="control-label" for="profilePic">Profile Picture *</label>
               <input type="file" class="form-control InputEmail1" aria-describedby="emailHelp" name="profilePic"
                 id="profilePic">
               <div class="mypic text-center">
@@ -186,6 +189,7 @@
             </div>
           </div>
         </div>
+        {% endif %}
       </div>
       <!-- User Details Ends -->
       <!-- User Address Details  -->
