@@ -1,0 +1,256 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/user.css'%}">
+<link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css'%}">
+<style>
+    .font-mod {
+        font-size: 12.5pt;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<div class="slide-item overlay"
+    style="background-image: url('{% static 'images/prof_banner.jpg' %}'); background-size: cover; background-position: center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 align-self-center text-center mx-auto">
+                {% if user.name != "" %}
+                <h1 class="heading mb-5">Hospital - {{user.name}}</h1>
+                {% else %}
+                <h1 class="heading mb-5">Hospital Profile</h1>
+                {% endif %}
+                <p><a href="#register" class="btn btn-primary font-mod">Start</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% if not user.basicFlag %}
+<section class="user-form">
+    <form action="{% url 'hospital-profile' %}" class="space-remove" method="POST">
+        {% csrf_token %}
+        <h2>Hospital Basic Details</h2>
+        <div class="container">
+            <div class="row">
+                <!-- First Name -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Hospital Name<span class="required"> *</span></label>
+                        {% if user.name == "" %}
+                        <input type="text" class="form-control" id="name" name="name" placeholder="Enter your name"
+                            required>
+                        {% else %}
+                        <input type="text" class="form-control" id="name" name="name" value="{{user.name}}" required>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Phone Number -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Hospital Contact Number</label>
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-5 col-sm-5 col-3 col-xl-3 col-lg-4 col-xs-5  phone">
+                                    <div class="marginright">
+                                        <select class="form-control inputselect" name="phone">
+                                            <option>+91</option>
+                                            <option>0278</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-7 col-sm-7 col-9 col-xl-9 col-lg-8 col-xs-7 phone ex-phone">
+                                    {% if user.contact == "" %}
+                                    <input type="text" class="form-control InputEmail1" id="contact" name="contact"
+                                        placeholder="Enter your phone number" required>
+                                    {% else %}
+                                    <input type="text" class="form-control InputEmail1" id="contact" name="contact"
+                                        value="{{user.contact}}" required>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Hospital's Website</label>
+                        {% if user.website == "" %}
+                        <input type="text" class="form-control InputEmail1" id="website" name="website"
+                            placeholder="Enter your website" required>
+                        {% else %}
+                        <input type="text" class="form-control InputEmail1" id="website" name="website"
+                            value="{{user.website}}" required>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- User Details Ends -->
+                <!-- User Address Details  -->
+
+                <!-- Address Line 1 -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Address Line 1<span class="required"> *</span></label>
+                        {% if user.address == "" %}
+                        <input type="text" class="form-control" id="address1" name="address1"
+                            placeholder="Enter your address" required>
+                        {% else %}
+                        <input type="text" class="form-control" id="address1" name="address1" value="{{user.address}}"
+                            required>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Address Line 2 -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class=" control-label">Address Line 2</label>
+                        <input type="text" class="form-control" name="address2" id="address"
+                            placeholder="Enter your address">
+                    </div>
+                </div>
+                <!-- City -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">City<span class="required"> *</span></label>
+                        {% if user.city == "" %}
+                        <input type="text" class="form-control" id="city" name="city" placeholder="Enter your city"
+                            required>
+                        {% else %}
+                        <input type="text" class="form-control" id="city" name="city" value="{{user.city}}" required>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- State -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">State<span class="required"> *</span></label>
+                        {% if user.state == "" %}
+                        <input type="text" class="form-control" id="state" name="state" placeholder="Enter your state"
+                            required>
+                        {% else %}
+                        <input type="text" class="form-control" id="state" name="state" value="{{user.state}}" required>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- ZipCode -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">ZipCode<span class="required"> *</span></label>
+                        {% if user.zipcode == "" %}
+                        <input type="text" class="form-control" id="zipcode" name="zipcode"
+                            placeholder="Enter your zipcode" required>
+                        {% else %}
+                        <input type="text" class="form-control" id="zipcode" name="zipcode" value="{{user.zipcode}}"
+                            required>
+                        {% endif %}
+                    </div>
+                </div>
+                <!-- Country -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Country<span class="required"> *</span></label>
+                        {% if user.country == "" %}
+                        <select class="form-control inputselect" id="country" name="country" required>
+                            <option value="-1">Select your country</option>
+                            {% for v in countries %}
+                            <option value="{{v}}">{{v}}</option>
+                            {% endfor %}
+                        </select>
+                        {% else %}
+                        <select class="form-control inputselect" id="country" name="country" required>
+                            <option value="-1">Select your country</option>
+                            {% for v in countries %}
+                            {% if user.country == v %}
+                            <option value="{{v}}" selected>{{v}}</option>
+                            {% else %}
+                            <option value="{{v}}">{{v}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <input class="form-check-input" type="checkbox" name="mediclaim" id="mediclaim"
+                            value="{{user.mediclaim}}">
+                        <label class="control-label" for="mediclaim">Does Hospital Accepts Government Relief
+                            Schemes?<span class="required"> *</span></label>
+                    </div>
+                </div>
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Hospital Type<span class="required"> *</span></label>
+                        {% if user.hospitalType == "" %}
+                        <select class="form-control inputselect" id="hospitalType" name="hospitalType" required>
+                            <option value="-1">Select Hospital Type</option>
+                            {% for v in hospitalType %}
+                            <option value="{{v}}">{{v}}</option>
+                            {% endfor %}
+                        </select>
+                        {% else %}
+                        <select class="form-control inputselect" id="hospitalType" name="hospitalType" required>
+                            <option value="-1">Select Hospital Type</option>
+                            {% for v in hospitalType %}
+                            {% if user.hospitalType == v %}
+                            <option value="{{v}}" selected>{{v}}</option>
+                            {% else %}
+                            <option value="{{v}}">{{v}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="hospitalSpec">Hospital Specification<span class="required">
+                                *</span></label>
+                        {% if user.hospitalSpec == "" %}
+                        <select class="form-control inputselect" id="hospitalSpec" name="hospitalSpec" required>
+                            <option value="-1">Select Hospital Specification</option>
+                            {% for v in hospitalSpec %}
+                            <option value="{{v}}">{{v}}</option>
+                            {% endfor %}
+                        </select>
+                        {% else %}
+                        <select class="form-control inputselect" id="hospitalSpec" name="hospitalSpec" required>
+                            <option value="-1">Select Hospital Specification</option>
+                            {% for v in hospitalSpec %}
+                            {% if user.hospitalSpec == v %}
+                            <option value="{{v}}" selected>{{v}}</option>
+                            {% else %}
+                            <option value="{{v}}">{{v}}</option>
+                            {% endif %}
+                            {% endfor %}
+                        </select>
+                        {% endif %}
+                    </div>
+                </div>
+
+
+                <!-- User Address Details Ends -->
+
+                <!-- Button -->
+                <div class="container">
+                    <div class="row userprofile-btn">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="btn btn-primary text-uppercase text-center">submit</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Button Ends -->
+            </div>
+        </div>
+    </form>
+</section>
+{% endif %}
+{% endblock %}

@@ -96,8 +96,10 @@
                                         <li><a href="{% url 'user-profile' %}" class="nav-link">Setup Profile</a></li>
                                         {% else %}
                                         <li><a href="{% url 'user-profileEdit' %}" class="nav-link">Edit Profile</a></li>
-                                        <li><a href="{% url 'user-profilePicEdit' %}" class="nav-link">Edit Profile Pic</a></li>
-                                        <li><a href="{% url 'user-aadharPicEdit' %}" class="nav-link">Edit Aadhar Copy</a></li>
+                                        {% if selectedTypeUser == "Users" %}
+                                            <li><a href="{% url 'user-profilePicEdit' %}" class="nav-link">Edit Profile Pic</a></li>
+                                            <li><a href="{% url 'user-aadharPicEdit' %}" class="nav-link">Edit Aadhar Copy</a></li>
+                                        {% endif %}
                                         <hr>
                                         {% endif %}
                                     </ul>

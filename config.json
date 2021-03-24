@@ -6,6 +6,42 @@
     "mail": "contact.dprs.web@gmail.com",
     "address": "Hi-Tech City, Bengalore, India",
     "uploadTo": "D:\\xampp\\htdocs\\Django\\DPRS\\static\\UploadedImages",
+    "appUsers": {
+      "register": {
+      "Users": "/user/register/",
+      "Hospitals": "/user/hospitalRegister/",
+      "NGOs": "/user/ngoRegister/"
+      },
+      "login": {
+      "Users": "/user/login/",
+      "Hospitals": "/user/hospitalLogin/",
+      "NGOs": "/user/ngoLogin/"
+      },
+      "profile": {
+      "Users": "/user/profile/",
+      "Hospitals": "/user/hospitalProfile/",
+      "NGOs": "/user/ngoProfile/"
+      }
+    },
+    "hospitalType":
+    {
+      "Government": "1",
+      "Private": "2",
+      "Semi Granted": "3"
+    },
+    "hospitalSpec":
+    {
+      "General": "1",
+      "Cardiac": "2",
+      "ENT": "3",
+      "Children": "4",
+      "Surgical": "5",
+      "Psychiatric": "6",
+      "Radiology": "7",
+      "Gynecology": "8",
+      "Kidney": "9",
+      "Other": "0"
+    },
     "countries": {
       "Afghanistan":"1",
       "Albania":"2",

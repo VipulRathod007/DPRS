@@ -5,25 +5,57 @@
 
 <div class="pt-5 pb-4 bg-primary">
 </div>
-<div id="register" class="container my-3">
-    <h1 style="text-align: center;">Login</h1>
-    <form class="" action="{% url 'user-login' %}" method="POST">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Health Mail</label>
-            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" name="email" required>
-            <div id="emailHelp" class="form-text">Health Mail will be avialable in your Health Card issued at the time of Registration.</div>
-        </div>
-        <div class="mb-3">
-            <label for="exampleInputPassword2" class="form-label">Password</label>
-            <input type="password" id="exampleInputPassword2" class="form-control" aria-describedby="passwordHelpBlock" name="pass" required>
-            <div id="passwordHelpBlock" class="form-text">
-                Your password must be 8-20 characters long, contain letters and numbers, and must not contain spaces,
-                special characters, or emoji.
+<div class="container mt-4 pt-4" id="login">
+    <h1 style="text-align: center;" class="mt-4 pt-3">Login</h1>
+    <div>
+        <form method="POST" action="{% url 'user-loginChoice' %}">
+            {% csrf_token %}
+            <div class="">
+                <div class="form-group">
+                    <label class=" control-label" for="typeUser">Login For</label>
+                    <select class="form-control inputselect" id="typeUser" name="typeUser" required>
+                        <option value="-1">Select your login type</option>
+                        {% for type in appUsers.login %}
+                        {% if type == selectedTypeUser %}
+                        <option value="{{type}}" selected>{{type}}</option>
+                        {% else %}
+                        <option value="{{type}}">{{type}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <hr>
+    {% for type, val in appUsers.login.items %}
+    {% if type == selectedTypeUser %}
+    <div class="my-3">
+        <form class="" action="{{val}}" method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" name="email"
+                    aria-describedby="emailHelp" required>
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" id="exampleInputPassword1" class="form-control" name="pass"
+                    aria-describedby="passwordHelpBlock" required>
+                <div id="passwordHelpBlock" class="form-text">
+                    Your password must be 8-20 characters long, contain letters and numbers, and must not contain
+                    spaces,
+                    special characters, or emoji.
+                </div>
+            </div>
+            <input type="text" value="{{selectedTypeUser}}" name="userType" hidden>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    {% endif %}
+    {% endfor %}
     <div class="pt-3">
         <p>Haven't Registered with us? <a href="{% url 'user-registration' %}">Register Here!</a></p>
     </div>
