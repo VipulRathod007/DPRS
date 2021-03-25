@@ -126,7 +126,7 @@
         <div class="error container" >
             {% if messages %}
                 {% for message in messages %}
-                    <div class="alert    alert-{{message.tags}} alert-dismissible fade show" role="alert" style=" position: absolute; top:10%;  width:73%">
+                    <div class="alert    alert-{{message.tags}} alert-dismissible fade show" role="alert" style=" position: absolute; top:10%;  width:80%; z-index:5000;">
                         {{message}}
                         <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';" data-bs-dismiss="alert" aria-label="Close">X</button>
                     </div>
