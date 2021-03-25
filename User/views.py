@@ -126,6 +126,7 @@ def logout(request):
         context['tabTitle'] = "Home"
         request.session.pop('current-user')
         context['user'] = None
+        context['selectedTypeUser'] = None
         context['editFlag'] = False
         messages.success(request, f"Logged Out Successfully!")
         return redirect("/")
@@ -179,7 +180,7 @@ def profileEdit(request):
 
 def profilePicEdit(request):
     if 'current-user' in request.session:
-        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+        if User.objects.filter(id=request.session['current-user']).first() is not None:
             if request.method == "GET":
                 context['tabTitle'] = "Edit Profile Picture"
                 context['user'] = User.objects.filter(id=request.session['current-user']).first()
@@ -201,7 +202,7 @@ def profilePicEdit(request):
 
 def aadharPicEdit(request):
     if 'current-user' in request.session:
-        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+        if User.objects.filter(id=request.session['current-user']).first() is not None:
             if request.method == "GET":
                 context['tabTitle'] = "Edit Aadhar Copy"
                 context['user'] = User.objects.filter(id=request.session['current-user']).first()
@@ -227,7 +228,6 @@ def profileEdit(request):
         context['editFlag'] = True
         global editFlag
         editFlag = True
-        userObj = User.objects.filter(id=request.session['current-user']).first()
         if context['selectedTypeUser'] == 'Users':
             userObj = User.objects.filter(id=request.session['current-user']).first()
         elif context['selectedTypeUser'] == 'Hospitals':

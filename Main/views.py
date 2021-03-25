@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse, redirect
 from django.core.mail import send_mail
+from django.contrib import messages
 import json
 
 with open('config.json', 'r') as file:
@@ -27,7 +28,7 @@ def contact(request):
         message = request.POST["message"]
         send_mail(subject + " from " + name, message, mail,
                   ["contact.dprs.web@gmail.com"])
-        context['message'] = "Mail Sent Succesfully!"
+        messages.success(request, f"Mail Sent Succesfully!")
         return render(request, 'Main/contact.html', context=context)
     else:
         return render(request, 'Main/contact.html', context=context)
