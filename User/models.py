@@ -28,19 +28,18 @@ class User(models.Model):
 
 
 class Admission(models.Model):
-    patientid = models.CharField(max_length=50)
+    patientid = models.IntegerField(max_length=50)
     patientname = models.CharField(max_length=50, default="")
     hospitalname = models.CharField(max_length=150, default="")
     cause = models.CharField(max_length=250, default="")
     report = models.CharField(max_length=250, default="")
     bill = models.CharField(max_length=250, default="")
-    billamt = models.CharField(max_length=10, default="")
+    billamt = models.FloatField(max_length=10, default=0)
     prescription = models.CharField(max_length=2250, default="")
-    expense = models.CharField(max_length=10, default="")
     billpaid = models.BooleanField(default=False)
     admitDate = models.CharField(max_length=100, default="")
     dischargeDate = models.CharField(max_length=100, default="")
-    hospitalid = models.CharField(max_length=50)
+    hospitalid = models.IntegerField(max_length=50)
 
 
 class Hospital(models.Model):

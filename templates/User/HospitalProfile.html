@@ -29,7 +29,7 @@
     </div>
 </div>
 {% if not user.basicFlag %}
-<section class="user-form">
+<section class="user-form" id="register">
     <form action="{% url 'hospital-profile' %}" class="space-remove" method="POST">
         {% csrf_token %}
         <h2>Hospital Basic Details</h2>
@@ -174,17 +174,6 @@
                     </div>
                 </div>
 
-
-
-                <div class="col-md-6  col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        <input class="form-check-input" type="checkbox" name="mediclaim" id="mediclaim"
-                            value="{{user.mediclaim}}">
-                        <label class="control-label" for="mediclaim">Does Hospital Accepts Government Relief
-                            Schemes?<span class="required"> *</span></label>
-                    </div>
-                </div>
-
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
                         <label class="control-label">Hospital Type<span class="required"> *</span></label>
@@ -236,7 +225,21 @@
                     </div>
                 </div>
 
-
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="mediclaim">Does Hospital Accepts Government Relief
+                            Schemes?<span class="required"> *</span></label>
+                        <select class="form-control inputselect" id="mediclaim" name="mediclaim" required>
+                        {% if user.isGranted == True %}
+                        <option value="1" selected>Yes</option>
+                        <option value="0">No</option>
+                        {% else %}
+                        <option value="1">Yes</option>
+                        <option value="0" selected>No</option>
+                        {% endif %}
+                        </select>
+                    </div>
+                </div>
                 <!-- User Address Details Ends -->
 
                 <!-- Button -->

@@ -30,18 +30,26 @@
     <h2 class="mt-4">Discharge Patient</h2>
 
     <div class="container">
-        <form method="POST" action="{% url 'patient-search' %}">
+        <!-- <form method="POST" action="{% url 'patient-search' %}">
             {% csrf_token %}
             <div class="">
                 <div class="form-group">
-                    <label class=" control-label" for="healthid">Health ID</label>
-                    {% if "patient-id" in request.session %}
+                    <label class=" control-label" for="healthid">Patient's Health ID and Name</label>
+                    {% if "patient_id" in request.session and False %}
                     <input type="text" class="form-control" name="healthid" id="healthid" value="{{patient.healthid}}">
                     {% else %}
                     <select class="form-control inputselect" id="admissionid" name="admissionid" required>
                         {% if admittedPatients %}
                         {% for admittedPatient in admittedPatients %}
-                        <option value="{{admittedPatient.id}}">{{admittedPatient.patientname}}</option>
+                        {% if admittedPatient.patientid == patient.id %}
+                        <option value="{{admittedPatient.id}}" selected><a
+                                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{patient.healthid}} -
+                                {{admittedPatient.patientname}}</a></option>
+                        {% else %}
+                        <option value="{{admittedPatient.id}}"><a
+                                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{patient.healthid}} -
+                                {{admittedPatient.patientname}}</a></option>
+                        {% endif %}
                         {% endfor %}
                         {% else %}
                         <option value="#">Currently No Patients are admitted!</option>
@@ -55,10 +63,26 @@
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        </form> -->
+        {% if admittedPatients %}
+        <label class=" control-label" for="healthid">Patient's Name and Cause</label>
+        <ul class="list-group" id="healthid">
+            {% for admittedPatient in admittedPatients %}
+            {% if admittedPatient.patientid == patient.id %}
+            <li class="list-group-item active" aria-current="true"><a style="color: white;"
+                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{admittedPatient.patientname}} - {{admittedPatient.cause}}</a></li>
+            {% else %}
+            <li class="list-group-item"><a
+                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{admittedPatient.patientname}} - {{admittedPatient.cause}}</a></li>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            <option value="#">Currently No Patients are admitted!</option>
+        </ul>
+        {% endif %}
     </div>
     <hr class="container">
-    {% if "patient-id" in request.session %}
+    {% if "patient_id" in request.session %}
     <form action="{% url 'discharge-patient' %}" class="space-remove" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="container">
@@ -75,7 +99,7 @@
                         {% endif %}
                     </div>
                 </div>
-                
+
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
                         <label class="control-label">Total Bill<span class="required"> *</span></label>

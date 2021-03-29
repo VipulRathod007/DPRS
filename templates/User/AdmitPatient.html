@@ -35,7 +35,7 @@
             <div class="">
                 <div class="form-group">
                     <label class=" control-label" for="healthid">Health ID</label>
-                    {% if "patient-id" in request.session %}
+                    {% if "patient_id" in request.session %}
                     <input type="text" class="form-control" name="healthid" id="healthid" value="{{patient.healthid}}">
                     {% else %}
                     <input type="text" class="form-control" name="healthid" id="healthid"
@@ -51,7 +51,7 @@
         </form>
     </div>
     <hr class="container">
-    {% if "patient-id" in request.session %}
+    {% if "patient_id" in request.session %}
     <form action="{% url 'admit-patient' %}" class="space-remove" method="POST" enctype="multipart/form-data">
         {% csrf_token %}
         <div class="container">

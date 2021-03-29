@@ -101,11 +101,11 @@
                                         <li><a href="#" class="nav-link">Respiratory</a></li>
                                         <hr>
                                         {% if "current-user" in request.session %}
-                                        {% if selectedTypeUser == "Users" %}
+                                        {% if request.session.selectedTypeUser == "Users" %}
                                         <li><a href="#" class="nav-link">Find Help</a></li>
                                         <li><a href="{% url 'admission-history' %}" class="nav-link">Admission History</a></li>
                                         {% endif %}
-                                        {% if selectedTypeUser == "Hospitals" %}
+                                        {% if request.session.selectedTypeUser == "Hospitals" %}
                                         <li><a href="{% url 'admit-patient' %}" class="nav-link">Admit New Patient</a>
                                         </li>
                                         <li><a href="{% url 'admitted-patients' %}" class="nav-link">Show Patients</a>
@@ -113,7 +113,7 @@
                                         <li><a href="{% url 'discharge-patient' %}" class="nav-link">Discharge
                                                 Patient</a></li>
                                         {% endif %}
-                                        {% if selectedTypeUser == "NGOs" %}
+                                        {% if request.session.selectedTypeUser == "NGOs" %}
                                         <li><a href="#" class="nav-link">Help Requests</a></li>
                                         {% endif %}
                                         {% endif %}
@@ -138,7 +138,7 @@
                                         {% else %}
                                         <li><a href="{% url 'user-profileEdit' %}" class="nav-link">Edit Profile</a>
                                         </li>
-                                        {% if selectedTypeUser == "Users" %}
+                                        {% if request.session.selectedTypeUser == "Users" %}
                                         <li><a href="{% url 'user-profilePicEdit' %}" class="nav-link">Edit Profile
                                                 Pic</a></li>
                                         <li><a href="{% url 'user-aadharPicEdit' %}" class="nav-link">Edit Aadhar

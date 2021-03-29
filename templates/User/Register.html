@@ -29,7 +29,7 @@
                     <select class="form-control inputselect" id="typeUser" name="typeUser" required>
                         <option value="-1">Select your type registration</option>
                         {% for type in appUsers.register %}
-                        {% if type == selectedTypeUser %}
+                        {% if type == request.session.selectedTypeUser %}
                         <option value="{{type}}" selected>{{type}}</option>
                         {% else %}
                         <option value="{{type}}">{{type}}</option>
@@ -43,7 +43,7 @@
     </div>
     <hr>
     {% for type, val in appUsers.register.items %}
-        {% if type == selectedTypeUser %}
+        {% if type == request.session.selectedTypeUser %}
         <div class="my-3">
             <form class="" action="{{val}}" method="POST">
                 {% csrf_token %}

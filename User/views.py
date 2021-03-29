@@ -99,31 +99,31 @@ def login(request):
     context['tabTitle'] = "Login"
     if request.method == "GET":
         if 'current-user' in request.session:
-            return redirect(context['appUsers']['profile'][context['selectedTypeUser']])
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
         else:
             return render(request, 'User/Login.html', context=context)
     elif request.method == "POST":
         mail = request.POST['email']
         passwd = request.POST['pass']
-        if context['selectedTypeUser'] == 'Users':
+        if request.session['selectedTypeUser'] == 'Users':
             matchUser = User.objects.filter(email=mail).first()
-        elif context['selectedTypeUser'] == 'Hospitals':
+        elif request.session['selectedTypeUser'] == 'Hospitals':
             matchUser = Hospital.objects.filter(email=mail).first()
-        elif context['selectedTypeUser'] == 'NGOs':
+        elif request.session['selectedTypeUser'] == 'NGOs':
             matchUser = NGO.objects.filter(email=mail).first()
 
         if matchUser is not None and matchUser.passwd == passwd:
             request.session['current-user'] = matchUser.id
             context['user'] = matchUser
             context['tabTitle'] = 'Home'
-            return redirect(context['appUsers']['profile'][context['selectedTypeUser']])
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
         else:
             messages.warning(request, f"Invalid Credentials!")
             return redirect(context['appUsers']['login']['Users'])
 
 
 def showPatients(request):
-    if 'current-user' in request.session and context['selectedTypeUser'] == "Hospitals":
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == "Hospitals":
         context['tabTitle'] = "Admitted Patients"
         admissions = Admission.objects.filter(hospitalid=request.session['current-user'])
         context['admissions'] = admissions
@@ -135,7 +135,7 @@ def showPatients(request):
 
 def dischargePatient(request):
     pid = ""
-    if 'current-user' in request.session and context['selectedTypeUser'] == 'Hospitals':
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == 'Hospitals':
         context['tabTitle'] = "Discharge Patient"
         if request.method == 'POST':
             # if pid == "":
@@ -151,7 +151,7 @@ def dischargePatient(request):
             admissionObj.bill = ".." + fs.url(billFileName)
             admissionObj.dischargeDate = datetime.now()
             admissionObj.save()
-            request.session.pop('patient-id')
+            request.session.pop('patient_id')
             messages.success(request, f"Discharged Successfully!")
             return redirect("/user/showPatients/")
         elif request.method == 'GET':
@@ -161,7 +161,7 @@ def dischargePatient(request):
                 admissionObj = Admission.objects.filter(id=pid).first()
                 context['patient'] = User.objects.filter(id=admissionObj.patientid).first()
                 context['admissionDetails'] = admissionObj
-                request.session['patient-id'] = context['patient'].id
+                request.session['patient_id'] = context['patient'].id
             allPatients = Admission.objects.filter(hospitalid=request.session['current-user'])
             admittedPatients = []
             for admittedPatient in allPatients:
@@ -174,7 +174,7 @@ def dischargePatient(request):
 
 
 def admissionHistory(request):
-    if 'current-user' in request.session and context['selectedTypeUser'] == "Users":
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == "Users":
         context['tabTitle'] = "Hospital Admission History"
         admissions = Admission.objects.filter(patientid=request.session['current-user'])
         # hospitalDetails = []
@@ -191,8 +191,10 @@ def logout(request):
     if 'current-user' in request.session:
         context['tabTitle'] = "Home"
         request.session.pop('current-user')
+        request.session.pop('selectedTypeUser')
+        if 'patient_id' in request.session:
+            request.session.pop('patient_id')
         context['user'] = None
-        context['selectedTypeUser'] = None
         context['editFlag'] = False
         messages.success(request, f"Logged Out Successfully!")
         return redirect("/")
@@ -201,11 +203,11 @@ def logout(request):
 
 
 def admitPatient(request):
-    if 'current-user' in request.session and context['selectedTypeUser'] == 'Hospitals':
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == 'Hospitals':
         context['tabTitle'] = "Admit Patient"
         if request.method == 'POST':
             fs = FileSystemStorage()
-            healthid = request.session['patient-id']
+            healthid = request.session['patient_id']
             cause = request.POST['cause']
             report = request.FILES['reports']
             prescription = request.POST['prescription']
@@ -227,20 +229,20 @@ def admitPatient(request):
         elif request.method == 'GET':
             return render(request, 'User/AdmitPatient.html', context=context)
     else:
-        context['selectedTypeUser'] = 'Hospitals'
+        request.session['selectedTypeUser'] = 'Hospitals'
         messages.warning(request, 'Login first to access the page!')
         return redirect(context['appUsers']['login']['Hospitals'])
 
 
 def patientSearch(request):
-    if 'current-user' in request.session and context['selectedTypeUser'] == 'Hospitals':
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == 'Hospitals':
         context['tabTitle'] = "Admit Patient"
         if request.method == 'POST':
             redirectLoc = int(request.POST['redirectUrl'])
             if 'healthid' in request.POST:
                 healthid = request.POST['healthid']
                 try:
-                    request.session['patient-id'] = int(healthid)
+                    request.session['patient_id'] = int(healthid)
                     context['patient'] = User.objects.filter(healthid=healthid).first()
                 except:
                     messages.warning(request, 'Enter Valid Health ID!')
@@ -259,7 +261,7 @@ def patientSearch(request):
             messages.warning(request, 'Access Denied!')
             return redirect('/')
     else:
-        context['selectedTypeUser'] = 'Hospitals'
+        request.session['selectedTypeUser'] = 'Hospitals'
         messages.warning(request, 'Login first to access the page!')
         return redirect(context['appUsers']['login']['Hospitals'])
 
@@ -269,10 +271,10 @@ def registerChoice(request):
         choice = request.POST['typeUser']
         if choice == '-1':
             messages.warning(request, "Please Select User Type for Registration!")
-            context['selectedTypeUser'] = choice
+            request.session['selectedTypeUser'] = choice
             return redirect(context['appUsers']['register']['Users'])
         else:
-            context['selectedTypeUser'] = choice
+            request.session['selectedTypeUser'] = choice
             return redirect(context['appUsers']['register'][choice])
     else:
         messages.warning(request, "Invalid Operation!")
@@ -284,10 +286,12 @@ def loginChoice(request):
         choice = request.POST['typeUser']
         if choice == '-1':
             messages.warning(request, "Please Select User Type for Registration!")
-            context['selectedTypeUser'] = choice
+            print(1)
+            request.session['selectedTypeUser'] = choice
             return redirect(context['appUsers']['login']['Users'])
         else:
-            context['selectedTypeUser'] = choice
+            request.session['selectedTypeUser'] = choice
+            print(2, choice)
             return redirect(context['appUsers']['login'][choice])
     else:
         messages.warning(request, "Invalid Operation!")
@@ -358,16 +362,16 @@ def profileEdit(request):
         context['editFlag'] = True
         global editFlag
         editFlag = True
-        if context['selectedTypeUser'] == 'Users':
+        if request.session['selectedTypeUser'] == 'Users':
             userObj = User.objects.filter(id=request.session['current-user']).first()
-        elif context['selectedTypeUser'] == 'Hospitals':
+        elif request.session['selectedTypeUser'] == 'Hospitals':
             userObj = Hospital.objects.filter(id=request.session['current-user']).first()
-        elif context['selectedTypeUser'] == 'NGOs':
+        elif request.session['selectedTypeUser'] == 'NGOs':
             userObj = NGO.objects.filter(id=request.session['current-user']).first()
 
         userObj.basicFlag = False
         userObj.save()
-        return redirect(context['appUsers']['profile'][context['selectedTypeUser']])
+        return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
     else:
         return redirect("/")
 
@@ -381,13 +385,13 @@ def profile(request):
         context['tabTitle'] = "Profile"
     if request.method == 'GET':
         if "current-user" in request.session:
-            if context['selectedTypeUser'] == 'Users':
+            if request.session['selectedTypeUser'] == 'Users':
                 context['user'] = User.objects.filter(id=request.session['current-user']).first()
                 return render(request, 'User/Profile.html', context=context)
-            elif context['selectedTypeUser'] == 'Hospitals':
+            elif request.session['selectedTypeUser'] == 'Hospitals':
                 context['user'] = Hospital.objects.filter(id=request.session['current-user']).first()
                 return render(request, 'User/HospitalProfile.html', context=context)
-            elif context['selectedTypeUser'] == 'NGOs':
+            elif request.session['selectedTypeUser'] == 'NGOs':
                 context['user'] = NGO.objects.filter(id=request.session['current-user']).first()
                 return render(request, 'User/NGOProfile.html', context=context)
         else:
@@ -480,7 +484,10 @@ def hospitalProfile(request):
             userObj.country = country
             userObj.zipcode = zipCode
             userObj.basicFlag = True
-            userObj.mediclaim = mediclaim
+            if mediclaim == '1':
+                userObj.isGranted = True
+            elif mediclaim == '0':
+                userObj.isGranted = False
             userObj.hospitalType = hospitalType
             userObj.hospitalSpec = hospitalSpec
             userObj.save()
