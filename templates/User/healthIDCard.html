@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+  transition: 0.3s;
+  width: 40%;
+  border-radius: 10px;
+  margin: auto;
+  margin-top: 25px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+img {
+  margin-top: 25px;
+  margin-right: 10px;
+  border-radius: 10px;
+  float: right;
+  width: 125px;
+  height: 125px;
+}
+
+.container {
+  padding: 2px 16px;
+}
+
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+
+</head>
+<body>
+
+
+<div class="card">
+  <img src="{{user.profilePic}}" alt="Avatar" >
+  <div class="container">
+    <h4><b>Name</b></h4> 
+    <p>{{user.fname}} {{user.lname}}</p> 
+
+    <h4><b>Date Of Birth</b></h4> 
+    <p>{{user.dob}}</p> 
+
+    <h4><b>Phone Number</b></h4> 
+    <p>{{user.contact}}</p> 
+
+    <h4><b>Address</b></h4> 
+    <p>{{user.address}}</p> 
+    <p>{{user.city}}</p> 
+    <p>{{user.state}}</p> 
+    <p>{{user.zipcode}}</p> 
+    <p>{{user.country}}</p> 
+
+    <div class="container" style="text-align: center;">
+        <h3><b>So Your Health ID Card Number</b></h3> 
+        <p>{{user.aadhar}}</p> 
+    </div>
+    
+  </div>
+</div>
+
+</body>
+</html> 

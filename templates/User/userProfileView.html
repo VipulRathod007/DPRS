@@ -1,0 +1,200 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/user.css'%}">
+<link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css'%}">
+
+
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans
+:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+<!--bootstrap.css file-->
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+
+
+
+<style>
+    .font-mod {
+        font-size: 12.5pt;
+    }
+
+    
+    .card {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    width: 60%;
+    border-radius: 10px;
+    margin: auto;
+    margin-top: 25px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+
+    img {
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    width: 200px;
+    height: 200px;
+    }
+
+    .container {
+        margin: auto;
+    }
+    
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<div class="slide-item overlay"
+    style="background-image: url('{{user.profilePic}}'); background-size: cover; background-position: center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 align-self-center text-center mx-auto">
+                <h1 class="heading mb-5">Welcome {{user.fname}} {{user.lname}}</h1>
+                <p><a href="#down" class="btn btn-primary font-mod">Start</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+ <div class="card" style="margin-bottom: 20px;">
+     <div class="container" id="down">
+         <h2 style="text-align: center;;">Basic Details Of User</h2>
+     </div>
+     
+     <div style=" " class="container">
+         
+         <table class="table table-striped table-hover">
+             
+             <tr>
+                 <td class="table">
+                    <h5><b>Name</b></h5> 
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.fname}} {{user.lname}}</div>                 
+                 </td>
+             </tr>
+             
+ 
+             
+             <tr>
+                 <td class="table">
+                    <h5><b>Date Of Birth</b></h5> 
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.dob}} </div> 
+                 </td>
+             </tr>
+ 
+             <tr>
+                 <td class="table">
+                    <h5><b>Gender</b></h5> 
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.gender}} </div> 
+                 </td>
+             </tr>
+ 
+             <tr>
+                 <td class="table">
+                    <h5><b>Phone Number</b></h5>     
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.contact}} </div> 
+                 </td>
+             </tr>
+ 
+             <tr>
+                 <td class="table">
+                    <h5><b>Email Address</b></h5>     
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.email}} </div> 
+                 </td>
+             </tr>
+ 
+             <tr>
+                 <td class="table">
+                    <h5><b>Address</b></h5>     
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.address}} </div> 
+                 </td>
+             </tr>
+ 
+             <tr>
+                 <td class="table">
+                    <h5><b>City</b></h5> 
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.city}} </div> 
+                 </td>
+             </tr>
+ 
+             <tr>
+                 <td class="table">
+                     <h5><b>State</b></h5> 
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.state}} </div> 
+                 </td>
+             </tr>
+ 
+             <tr>
+                 <td class="table">
+                     <h5><b>Zip Code</b></h5> 
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.zipcode}} </div> 
+                 </td>
+             </tr>
+ 
+             <tr>
+                 <td class="table">
+                     <h5><b>Country</b></h5> 
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.country}} </div> 
+                 </td>
+             </tr>
+ 
+             <tr>
+                 <td class="table">
+                     <h5><b>Adhar Card Number</b></h5> 
+                 </td>
+                 <td>
+                     <div class="control-label"> {{user.aadhar}} </div> 
+                 </td>
+             </tr>
+ 
+             <tr>
+                 <td class="table">
+                     <h5><b>Adhar Card Image</b></h5> 
+                 </td>
+                 <td >
+                    <div class="control-label"> <img  src="{{user.aadharPic}}"> </div>
+                     
+                 </td>
+             </tr>
+ 
+         </table> 
+     </div>
+     </div>
+
+
+
+
+{% endblock %}
