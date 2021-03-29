@@ -446,6 +446,59 @@ def profile(request):
             return redirect(context['appUsers']['profile']['Users'])
 
 
+
+# User's Profile
+def userProfileView(request):
+    if 'current-user' in request.session:
+        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+            context['tabTitle'] = "View User Profile"
+            context['user'] = User.objects.filter(id=request.session['current-user']).first()
+            return render(request, "User/userProfileView.html", context=context)
+        else:
+            return redirect("/user/profile/")
+    else:
+        return redirect("/user/login/")
+
+# User's Health ID Card 
+def healthIDCardView(request):
+    if 'current-user' in request.session:
+        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+            context['tabTitle'] = "View Health ID Card"
+            context['user'] = User.objects.filter(id=request.session['current-user']).first()
+            return render(request, "User/healthIDCard.html", context=context)
+        else:
+            return redirect("/user/profile/")
+    else:
+        return redirect("/user/login/")
+
+# Hospital's Profile
+def hospitalProfileView(request):
+    if 'current-user' in request.session:
+        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+            context['tabTitle'] = "View Hospital Profile"
+            context['user'] = Hospital.objects.filter(id=request.session['current-user']).first()
+            return render(request, "User/hospitalProfileView.html", context=context)
+        else:
+            return redirect("/user/profile/")
+    else:
+        return redirect("/user/login/")
+
+# NGO's Profile
+def ngoProfileView(request):
+    if 'current-user' in request.session:
+        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+            context['tabTitle'] = "View NGO Profile"
+            context['user'] = NGO.objects.filter(id=request.session['current-user']).first()
+            return render(request, "User/ngoProfileView.html", context=context)
+        else:
+            return redirect("/user/profile/")
+    else:
+        return redirect("/user/login/")
+
+
+
+
+
 def hospitalProfile(request):
     flag = None
     global editFlag

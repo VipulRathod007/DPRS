@@ -28,6 +28,10 @@ urlpatterns = [
     path('aadharPicEdit/', aadharPicEdit, name='user-aadharPicEdit'),
     path('registerChoice/', registerChoice, name='user-registerChoice'),
     path('loginChoice/', loginChoice, name='user-loginChoice'),
+    path('userProfileView/', userProfileView, name='user-profileView'),
+    path('healthIDCardView/', healthIDCardView, name='user-healthIDCardView'),
+    path('hospitalProfileView/', hospitalProfileView, name='hospital-profileView'),
+    path('ngoProfileView/', ngoProfileView, name='ngo-profileView'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
