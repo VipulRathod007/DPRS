@@ -143,6 +143,16 @@
                                                 Pic</a></li>
                                         <li><a href="{% url 'user-aadharPicEdit' %}" class="nav-link">Edit Aadhar
                                                 Copy</a></li>
+
+                                        <li><a href="{% url 'user-profileView' %}" class="nav-link">View Profile</a></li>
+                                        <li><a target="_blank" href="{% url 'user-healthIDCardView' %}" class="nav-link">View Health ID Card</a></li>
+                                        
+                                        {% elif request.session.selectedTypeUser == "Hospitals" %}
+                                        <li><a href="{% url 'hospital-profileView' %}" class="nav-link">View Profile</a></li>
+
+                                        {% elif request.session.selectedTypeUser == "NGOs" %}
+                                        <li><a href="{% url 'ngo-profileView' %}" class="nav-link">View Profile</a></li>
+
                                         {% endif %}
                                         <hr>
                                         {% endif %}
