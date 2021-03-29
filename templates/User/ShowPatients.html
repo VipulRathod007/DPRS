@@ -1,0 +1,47 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block body %}
+
+<div class="pt-5 pb-4 bg-primary">
+</div>
+<div class="container mt-2" id="login">
+    <h1 style="text-align: center;" class="">Patients</h1>
+    {% if admissions %}
+    <div class="mb-4 pb-4">
+        <table class="table table-hover" id="myTable">
+            <thead>
+                <tr>
+                    <th>Patient ID</th>
+                    <th>Patient Name</th>
+                    <th>Admission Date</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for admission in admissions %}
+                <tr>
+                    <td>{{admission.patientid}}</td>
+                    <td>{{admission.patientname}}</td>
+                    <td>{{admission.admitDate}}</td>
+                    <td><a href="/user/showPatient/?id={{admission.id}}">View</a></td>
+                    {% if admission.dischargeDate == "" %}
+                        <td><a href="/user/dischargePatient/?id={{admission.id}}">Discharge</a></td>
+                    {% else %}
+                        <td>Discharged on {{admission.dischargeDate}}</td>
+                    {% endif %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p style="text-align: center;">No Patients Admitted Yet!</p>
+    {% endif %}
+</div>
+
+<script>
+    $("#myTable").dataTable();
+</script>
+{% endblock body %}

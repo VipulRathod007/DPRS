@@ -6,7 +6,30 @@
     <title>DPRS | {{tabTitle}}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"
+        integrity="sha256-0YPKAwZP7Mp3ALMRVB2i8GXeEndvCq3eSl/WsAl1Ryk=" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" type="text/css"
+        href="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/css/jquery.dataTables.css">
 
+    <!-- jQuery -->
+    <script type="text/javascript" charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.8.2.min.js"></script>
+
+    <!-- DataTables -->
+    <script type="text/javascript" charset="utf8"
+        src="http://ajax.aspnetcdn.com/ajax/jquery.dataTables/1.9.4/jquery.dataTables.min.js"></script>
     <link
         href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;700&family=Playfair+Display:wght@400;700&display=swap"
         rel="stylesheet">
@@ -69,13 +92,31 @@
                             <ul class="site-menu main-menu js-clone-nav mr-auto d-none d-lg-block">
                                 <li><a href="{% url 'start-home' %}" class="nav-link ">Home</a></li>
                                 <li class="has-children">
-                                    <a href="services.html" class="nav-link">Services</a>
+                                    <a href="" class="nav-link">Services</a>
                                     <ul class="dropdown">
                                         <li><a href="#" class="nav-link">General Surgery</a></li>
                                         <li><a href="#" class="nav-link">Opthalmology Procedures</a></li>
                                         <li><a href="#" class="nav-link">Outpatient Services</a></li>
                                         <li><a href="#" class="nav-link">Radiology and Mammograms</a></li>
                                         <li><a href="#" class="nav-link">Respiratory</a></li>
+                                        <hr>
+                                        {% if "current-user" in request.session %}
+                                        {% if selectedTypeUser == "Users" %}
+                                        <li><a href="#" class="nav-link">Find Help</a></li>
+                                        <li><a href="{% url 'admission-history' %}" class="nav-link">Admission History</a></li>
+                                        {% endif %}
+                                        {% if selectedTypeUser == "Hospitals" %}
+                                        <li><a href="{% url 'admit-patient' %}" class="nav-link">Admit New Patient</a>
+                                        </li>
+                                        <li><a href="{% url 'admitted-patients' %}" class="nav-link">Show Patients</a>
+                                        </li>
+                                        <li><a href="{% url 'discharge-patient' %}" class="nav-link">Discharge
+                                                Patient</a></li>
+                                        {% endif %}
+                                        {% if selectedTypeUser == "NGOs" %}
+                                        <li><a href="#" class="nav-link">Help Requests</a></li>
+                                        {% endif %}
+                                        {% endif %}
                                         <li class="has-children">
                                             <a href="#">More Links</a>
                                             <ul class="dropdown">
@@ -95,10 +136,13 @@
                                         {% if not user.basicFlag and not editFlag %}
                                         <li><a href="{% url 'user-profile' %}" class="nav-link">Setup Profile</a></li>
                                         {% else %}
-                                        <li><a href="{% url 'user-profileEdit' %}" class="nav-link">Edit Profile</a></li>
+                                        <li><a href="{% url 'user-profileEdit' %}" class="nav-link">Edit Profile</a>
+                                        </li>
                                         {% if selectedTypeUser == "Users" %}
-                                            <li><a href="{% url 'user-profilePicEdit' %}" class="nav-link">Edit Profile Pic</a></li>
-                                            <li><a href="{% url 'user-aadharPicEdit' %}" class="nav-link">Edit Aadhar Copy</a></li>
+                                        <li><a href="{% url 'user-profilePicEdit' %}" class="nav-link">Edit Profile
+                                                Pic</a></li>
+                                        <li><a href="{% url 'user-aadharPicEdit' %}" class="nav-link">Edit Aadhar
+                                                Copy</a></li>
                                         {% endif %}
                                         <hr>
                                         {% endif %}
@@ -106,7 +150,7 @@
                                 </li>
                                 <li><a href="{% url 'user-logout' %}" class="nav-link">Logout</a></li>
                                 {% else %}
-                                    <li><a href="{% url 'user-login' %}" class="nav-link">Login</a></li>
+                                <li><a href="{% url 'user-login' %}" class="nav-link">Login</a></li>
                                 {% endif %}
                             </ul>
                         </nav>
@@ -120,17 +164,19 @@
                 </div>
             </div>
 
-                  </header>
+        </header>
 
 
-        <div class="error container" >
+        <div class="error container">
             {% if messages %}
-                {% for message in messages %}
-                    <div class="alert    alert-{{message.tags}} alert-dismissible fade show" role="alert" style=" position: absolute; top:10%;  width:80%; z-index:5000;">
-                        {{message}}
-                        <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';" data-bs-dismiss="alert" aria-label="Close">X</button>
-                    </div>
-                {% endfor %}
+            {% for message in messages %}
+            <div class="alert    alert-{{message.tags}} alert-dismissible fade show" role="alert"
+                style=" position: absolute; top:10%;  width:80%; z-index:5000;">
+                {{message}}
+                <button type="button" class="btn-close" onclick="this.parentElement.style.display='none';"
+                    data-bs-dismiss="alert" aria-label="Close">X</button>
+            </div>
+            {% endfor %}
             {% endif %}
         </div>
         {% block body %}
@@ -205,7 +251,7 @@
                         </div>
                     </div> -->
 
-                </div>
+            </div>
         </footer>
     </div>
 

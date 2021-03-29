@@ -1,0 +1,107 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/user.css'%}">
+<link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css'%}">
+<style>
+    .font-mod {
+        font-size: 12.5pt;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<div class="slide-item overlay"
+    style="background-image: url('{% static 'images/reg_banner.jpg' %}'); background-size: cover; background-position: center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 align-self-center text-center mx-auto">
+                <h1 class="heading mb-5">New Patient Admission</h1>
+                <p><a href="#register" class="btn btn-primary font-mod">Start</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--User Details -->
+<section class="user-form mt-4 pt-4" id="register">
+    <h2 class="mt-4">Patient Admission</h2>
+
+    <div class="container">
+        <form method="POST" action="{% url 'patient-search' %}">
+            {% csrf_token %}
+            <div class="">
+                <div class="form-group">
+                    <label class=" control-label" for="healthid">Health ID</label>
+                    {% if "patient-id" in request.session %}
+                    <input type="text" class="form-control" name="healthid" id="healthid" value="{{patient.healthid}}">
+                    {% else %}
+                    <input type="text" class="form-control" name="healthid" id="healthid"
+                        placeholder="Enter Patient's Health ID Here" required>
+                    {% endif %}
+                    <select class="form-control inputselect" id="redirectUrl" name="redirectUrl" hidden required>
+                        <option value="0" selected>Admit</option>
+                        <option value="1">Discharge</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    <hr class="container">
+    {% if "patient-id" in request.session %}
+    <form action="{% url 'admit-patient' %}" class="space-remove" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container">
+            <div class="row">
+                <!-- Diseases -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Reason behind Admission<span class="required"> *</span></label>
+                        <input type="text" class="form-control" name="cause" id="cause" required>
+                    </div>
+                </div>
+                <!--Upload Reports -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="upload-pic">
+                            <label class="control-label" for="InputEmail1">Upload Patient's Reports</label>
+                            <input type="file" class="form-control InputEmail1" aria-describedby="emailHelp"
+                                name="reports" name="reports">
+                            <div class="mypic text-center">
+                                <img class="img-fluid" src="{% static 'images/upload.png' %}"
+                                    style="padding-top: 20px;">
+                                <h6>Upload a Reports</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Please List Patient's Current Medications -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="textarea-input dashboard ">
+                            <label class="control-label">Patient's Current Prescription</label>
+                            <textarea placeholder="Description..." class="form-control InputEmail1" id="text-ar"
+                                style="height: 110px;" name="prescription"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <!-- User Address Details Ends -->
+
+                <!-- Button -->
+                <div class="container">
+                    <div class="row userprofile-btn">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="btn btn-primary text-uppercase text-center">submit</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Button Ends -->
+            </div>
+        </div>
+    </form>
+    {% endif %}
+</section>
+{% endblock body %}

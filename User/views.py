@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
-from .models import User, Hospital, NGO
+from .models import *
 from django.contrib import messages
 import json
+from datetime import datetime
 import os
 from django.core.files.storage import FileSystemStorage
 
@@ -121,6 +122,71 @@ def login(request):
             return redirect(context['appUsers']['login']['Users'])
 
 
+def showPatients(request):
+    if 'current-user' in request.session and context['selectedTypeUser'] == "Hospitals":
+        context['tabTitle'] = "Admitted Patients"
+        admissions = Admission.objects.filter(hospitalid=request.session['current-user'])
+        context['admissions'] = admissions
+        return render(request, "User/ShowPatients.html", context=context)
+    else:
+        messages.warning(request, f"Invalid Credentials!")
+        return redirect(context['appUsers']['login']['Users'])
+
+
+def dischargePatient(request):
+    pid = ""
+    if 'current-user' in request.session and context['selectedTypeUser'] == 'Hospitals':
+        context['tabTitle'] = "Discharge Patient"
+        if request.method == 'POST':
+            # if pid == "":
+            admissionObj = Admission.objects.filter(id=context['admission-id']).first()
+            # else:
+            #     admissionObj = Admission.objects.filter(id=pid).first()
+            admissionObj.cause = request.POST['cause']
+            admissionObj.prescription = request.POST['prescription']
+            admissionObj.billamt = float(request.POST['billamt'])
+            fs = FileSystemStorage()
+            bill = request.FILES['bill']
+            billFileName = fs.save("Reports" + str(admissionObj.id) + bill.name, bill)
+            admissionObj.bill = ".." + fs.url(billFileName)
+            admissionObj.dischargeDate = datetime.now()
+            admissionObj.save()
+            request.session.pop('patient-id')
+            messages.success(request, f"Discharged Successfully!")
+            return redirect("/user/showPatients/")
+        elif request.method == 'GET':
+            if 'id' in request.GET:
+                pid = request.GET['id']
+                context['admission-id'] = pid
+                admissionObj = Admission.objects.filter(id=pid).first()
+                context['patient'] = User.objects.filter(id=admissionObj.patientid).first()
+                context['admissionDetails'] = admissionObj
+                request.session['patient-id'] = context['patient'].id
+            allPatients = Admission.objects.filter(hospitalid=request.session['current-user'])
+            admittedPatients = []
+            for admittedPatient in allPatients:
+                if admittedPatient.dischargeDate == "":
+                    admittedPatients.append(admittedPatient)
+            context['admittedPatients'] = admittedPatients
+            return render(request, "User/DischargePatient.html", context=context)
+    else:
+        return redirect("/")
+
+
+def admissionHistory(request):
+    if 'current-user' in request.session and context['selectedTypeUser'] == "Users":
+        context['tabTitle'] = "Hospital Admission History"
+        admissions = Admission.objects.filter(patientid=request.session['current-user'])
+        # hospitalDetails = []
+        # for admission in admissions:
+        #     hospitalDetails.append(Hospital.objects.filter(id=admission.hospitalid).first())
+        context['admissions'] = admissions
+        return render(request, "User/AdmissionHistory.html", context=context)
+    else:
+        messages.warning(request, f"Access Denied!")
+        return redirect(context['appUsers']['login']['Users'])
+
+
 def logout(request):
     if 'current-user' in request.session:
         context['tabTitle'] = "Home"
@@ -132,6 +198,70 @@ def logout(request):
         return redirect("/")
     else:
         return redirect("/")
+
+
+def admitPatient(request):
+    if 'current-user' in request.session and context['selectedTypeUser'] == 'Hospitals':
+        context['tabTitle'] = "Admit Patient"
+        if request.method == 'POST':
+            fs = FileSystemStorage()
+            healthid = request.session['patient-id']
+            cause = request.POST['cause']
+            report = request.FILES['reports']
+            prescription = request.POST['prescription']
+            userObj = User.objects.filter(healthid=healthid).first()
+            hospitalObj = Hospital.objects.filter(id=request.session['current-user']).first()
+            reportFileName = fs.save("Reports" + str(userObj.id) + report.name, report)
+            admissionObj = Admission()
+            admissionObj.cause = cause
+            admissionObj.patientid = userObj.id
+            admissionObj.hospitalid = hospitalObj.id
+            admissionObj.prescription = prescription
+            admissionObj.report = ".." + fs.url(reportFileName)
+            admissionObj.patientname = userObj.fname + ' ' + userObj.lname
+            admissionObj.admitDate = datetime.now()
+            admissionObj.hospitalname = hospitalObj.name
+            admissionObj.save()
+            messages.success(request, 'Patient admitted Successfully!')
+            return redirect('/user/showPatients/')
+        elif request.method == 'GET':
+            return render(request, 'User/AdmitPatient.html', context=context)
+    else:
+        context['selectedTypeUser'] = 'Hospitals'
+        messages.warning(request, 'Login first to access the page!')
+        return redirect(context['appUsers']['login']['Hospitals'])
+
+
+def patientSearch(request):
+    if 'current-user' in request.session and context['selectedTypeUser'] == 'Hospitals':
+        context['tabTitle'] = "Admit Patient"
+        if request.method == 'POST':
+            redirectLoc = int(request.POST['redirectUrl'])
+            if 'healthid' in request.POST:
+                healthid = request.POST['healthid']
+                try:
+                    request.session['patient-id'] = int(healthid)
+                    context['patient'] = User.objects.filter(healthid=healthid).first()
+                except:
+                    messages.warning(request, 'Enter Valid Health ID!')
+                    return redirect(context['appUsers']['login']['Hospitals'])
+                if redirectLoc == 1:
+                    return redirect('/user/dischargePatient/')
+            elif 'admissionid' in request.POST:
+                admissionid = request.POST['admissionid']
+                context['patient'] = User.objects.filter(id=Admission.objects.filter(id=admissionid).first().patientid).first()
+                if redirectLoc == 1:
+                    url = '/user/dischargePatient/?id=' + str(admissionid)
+                    return redirect(url)
+            if redirectLoc == 0:
+                return redirect('/user/admitPatient/')
+        elif request.method == 'GET':
+            messages.warning(request, 'Access Denied!')
+            return redirect('/')
+    else:
+        context['selectedTypeUser'] = 'Hospitals'
+        messages.warning(request, 'Login first to access the page!')
+        return redirect(context['appUsers']['login']['Hospitals'])
 
 
 def registerChoice(request):
@@ -291,6 +421,7 @@ def profile(request):
             userObj.fname = fname
             userObj.lname = lname
             userObj.dob = dob
+            userObj.healthid = aadhar
             userObj.gender = gender
             userObj.contact = contact
             userObj.aadhar = aadhar

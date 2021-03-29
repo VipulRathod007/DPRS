@@ -5,6 +5,7 @@ class User(models.Model):
     email = models.EmailField()
     passwd = models.CharField(max_length=50)
     fname = models.CharField(max_length=50, default="")
+    healthid = models.CharField(max_length=50, default="")
     lname = models.CharField(max_length=50, default="")
     dob = models.CharField(max_length=50, default="")
     gender = models.CharField(max_length=15, default="")
@@ -24,6 +25,22 @@ class User(models.Model):
             return self.email
         else:
             return self.fname
+
+
+class Admission(models.Model):
+    patientid = models.CharField(max_length=50)
+    patientname = models.CharField(max_length=50, default="")
+    hospitalname = models.CharField(max_length=150, default="")
+    cause = models.CharField(max_length=250, default="")
+    report = models.CharField(max_length=250, default="")
+    bill = models.CharField(max_length=250, default="")
+    billamt = models.CharField(max_length=10, default="")
+    prescription = models.CharField(max_length=2250, default="")
+    expense = models.CharField(max_length=10, default="")
+    billpaid = models.BooleanField(default=False)
+    admitDate = models.CharField(max_length=100, default="")
+    dischargeDate = models.CharField(max_length=100, default="")
+    hospitalid = models.CharField(max_length=50)
 
 
 class Hospital(models.Model):
