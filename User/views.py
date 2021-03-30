@@ -450,48 +450,48 @@ def profile(request):
 # User's Profile
 def userProfileView(request):
     if 'current-user' in request.session:
-        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+        if User.objects.filter(id=request.session['current-user']).first() is not None:
             context['tabTitle'] = "View User Profile"
             context['user'] = User.objects.filter(id=request.session['current-user']).first()
             return render(request, "User/userProfileView.html", context=context)
         else:
-            return redirect("/user/profile/")
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
     else:
         return redirect("/user/login/")
 
 # User's Health ID Card 
 def healthIDCardView(request):
     if 'current-user' in request.session:
-        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+        if User.objects.filter(id=request.session['current-user']).first() is not None:
             context['tabTitle'] = "View Health ID Card"
             context['user'] = User.objects.filter(id=request.session['current-user']).first()
             return render(request, "User/healthIDCard.html", context=context)
         else:
-            return redirect("/user/profile/")
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
     else:
         return redirect("/user/login/")
 
 # Hospital's Profile
 def hospitalProfileView(request):
     if 'current-user' in request.session:
-        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+        if Hospital.objects.filter(id=request.session['current-user']).first() is not None:
             context['tabTitle'] = "View Hospital Profile"
             context['user'] = Hospital.objects.filter(id=request.session['current-user']).first()
             return render(request, "User/hospitalProfileView.html", context=context)
         else:
-            return redirect("/user/profile/")
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
     else:
         return redirect("/user/login/")
 
-# NGO's Profile
+
 def ngoProfileView(request):
     if 'current-user' in request.session:
-        if User.objects.filter(id=request.session['current-user']).first().basicFlag:
+        if NGO.objects.filter(id=request.session['current-user']).first() is not None:
             context['tabTitle'] = "View NGO Profile"
             context['user'] = NGO.objects.filter(id=request.session['current-user']).first()
             return render(request, "User/ngoProfileView.html", context=context)
         else:
-            return redirect("/user/profile/")
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
     else:
         return redirect("/user/login/")
 
