@@ -32,6 +32,8 @@ urlpatterns = [
     path('healthIDCardView/', healthIDCardView, name='user-healthIDCardView'),
     path('hospitalProfileView/', hospitalProfileView, name='hospital-profileView'),
     path('ngoProfileView/', ngoProfileView, name='ngo-profileView'),
+    path('showPatient/<int:pk>/', showPatientHistory, name = 'show-patient'),
+    path('admissionHistory/<int:pk>/', showUserHistory, name = 'show-user'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
