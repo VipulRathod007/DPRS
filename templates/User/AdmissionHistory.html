@@ -33,7 +33,7 @@
                     {% else %}
                     <td>Discharged on {{admission.dischargeDate}}</td>
                     {% endif %}
-                    <td><a href="/user/showAdmissionHistory/?id={{admission.id}}">View</a></td>
+                    <td><a href="/user/admissionHistory/{{admission.id}}">View</a></td>
                 </tr>
                 {% endfor %}
             </tbody>
