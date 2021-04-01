@@ -16,8 +16,8 @@
                     <th>Patient ID</th>
                     <th>Patient Name</th>
                     <th>Admission Date</th>
-                    <th></th>
-                    <th></th>
+                    <th>Patient's Details</th>
+                    <th>Admit Status</th>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +26,7 @@
                     <td>{{admission.patientid}}</td>
                     <td>{{admission.patientname}}</td>
                     <td>{{admission.admitDate}}</td>
-                    <td><a href="/user/showPatient/?id={{admission.id}}">View</a></td>
+                    <td><a href="/user/showPatient/{{admission.id}}">View</a></td>
                     {% if admission.dischargeDate == "" %}
                         <td><a href="/user/dischargePatient/?id={{admission.id}}">Discharge</a></td>
                     {% else %}

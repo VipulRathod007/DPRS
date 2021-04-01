@@ -110,13 +110,13 @@
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
                         <div class="textarea-input dashboard ">
-                            <label class="control-label">Patient's Current Prescription</label>
+                            <label class="control-label">Patient's Current Prescription*</label>
                             {% if admissionDetails.cause == "" %}
                             <textarea placeholder="Description..." class="form-control InputEmail1" id="text-ar"
-                                style="height: 110px;" name="prescription"></textarea>
+                                style="height: 110px;" name="prescription" required></textarea>
                             {% else %}
                             <textarea placeholder="Description..." class="form-control InputEmail1" id="text-ar"
-                                style="height: 110px;" name="prescription">{{admissionDetails.prescription}}</textarea>
+                                style="height: 110px;" name="prescription" required>{{admissionDetails.prescription}}</textarea>
                             {% endif %}
                         </div>
                     </div>
@@ -140,9 +140,9 @@
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
                         <div class="upload-pic">
-                            <label class="control-label" for="InputEmail1">Upload Patient's Bill</label>
+                            <label class="control-label" for="InputEmail1">Upload Patient's Bill*</label>
                             <input type="file" class="form-control InputEmail1" aria-describedby="emailHelp" name="bill"
-                                name="bill">
+                                name="bill" required>
                             <div class="mypic text-center">
                                 <img class="img-fluid" src="{% static 'images/upload.png' %}"
                                     style="padding-top: 20px;">

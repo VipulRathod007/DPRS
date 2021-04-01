@@ -487,7 +487,7 @@ def hospitalProfileView(request):
     else:
         return redirect("/user/login/")
 
-
+# NGO's Profile
 def ngoProfileView(request):
     if 'current-user' in request.session:
         if NGO.objects.filter(id=request.session['current-user']).first() is not None:
@@ -499,6 +499,41 @@ def ngoProfileView(request):
     else:
         return redirect("/user/login/")
 
+
+# Show Particular Patient
+def showPatientHistory(request,pk):
+    if 'current-user' in request.session:
+        if Hospital.objects.filter(id=request.session['current-user']).first() is not None:
+            context['tabTitle'] = "Show Patient History"
+            context['user'] = Hospital.objects.filter(id=request.session['current-user']).first()
+            admissions = Admission.objects.filter(hospitalid=request.session['current-user'])
+            admission = Admission.objects.filter(id=pk).first()
+            # for admission in admissions:
+            #     if admission.id == pk:
+            context['admission'] = admission
+            return render(request, "User/patientHistoryView.html", context=context)
+        else:
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
+    else:
+        return redirect("/user/login/")
+
+
+# Show Particular Patient
+def showUserHistory(request,pk):
+    if 'current-user' in request.session:
+        if User.objects.filter(id=request.session['current-user']).first() is not None:
+            context['tabTitle'] = "Show User History"
+            context['user'] = User.objects.filter(id=request.session['current-user']).first()
+            admissions = Admission.objects.filter(hospitalid=request.session['current-user'])
+            admission = Admission.objects.filter(id=pk).first()
+            # for admission in admissions:
+            #     if admission.id == pk:
+            context['admission'] = admission
+            return render(request, "User/userHistoryView.html", context=context)
+        else:
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
+    else:
+        return redirect("/user/login/")
 
 
 
