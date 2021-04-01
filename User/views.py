@@ -244,6 +244,10 @@ def patientSearch(request):
                 try:
                     request.session['patient_id'] = int(healthid)
                     context['patient'] = User.objects.filter(healthid=healthid).first()
+                    if context['patient'] is None:
+                        messages.warning(request, "Invalid Health ID of the Patient!")
+                        request.session.pop('patient_id')
+                        return redirect("/user/admitPatient/")
                 except:
                     messages.warning(request, 'Enter Valid Health ID!')
                     return redirect(context['appUsers']['login']['Hospitals'])
