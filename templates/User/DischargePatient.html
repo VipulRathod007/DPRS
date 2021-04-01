@@ -70,10 +70,10 @@
             {% for admittedPatient in admittedPatients %}
             {% if admittedPatient.patientid == patient.id %}
             <li class="list-group-item active" aria-current="true"><a style="color: white;"
-                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{admittedPatient.patientname}} - {{admittedPatient.cause}}</a></li>
+                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{admittedPatient.patientname}} - Admitted For - {{admittedPatient.cause}}</a></li>
             {% else %}
             <li class="list-group-item"><a
-                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{admittedPatient.patientname}} - {{admittedPatient.cause}}</a></li>
+                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{admittedPatient.patientname}} - Admitted For - {{admittedPatient.cause}}</a></li>
             {% endif %}
             {% endfor %}
             {% else %}
@@ -151,6 +151,15 @@
                     </div>
                 </div>
 
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="ispaid">Did Patient pay total bill amount?<span class="required"> *</span></label>
+                        <select class="form-control inputselect" id="ispaid" name="ispaid" required>
+                        <option value="1">Yes</option>
+                        <option value="0" selected>No</option>
+                        </select>
+                    </div>
+                </div>
                 <!-- User Address Details Ends -->
 
                 <!-- Button -->

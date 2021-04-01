@@ -41,6 +41,9 @@ class Admission(models.Model):
     dischargeDate = models.CharField(max_length=100, default="")
     hospitalid = models.IntegerField(max_length=50)
 
+    def __str__(self):
+        return str(self.patientname) + ' admitted in ' + str(self.hospitalname) + ' on ' + str(self.admitDate)
+
 
 class Hospital(models.Model):
     email = models.EmailField()
@@ -85,3 +88,16 @@ class NGO(models.Model):
             return "NGO - " + str(self.email)
         else:
             return self.name
+
+
+class HelpRequest(models.Model):
+    patientid = models.IntegerField()
+    hospitalid = models.IntegerField()
+    ngoid = models.IntegerField()
+    ngoname = models.CharField(max_length=250, default="")
+    admissionid = models.IntegerField()
+    isapproved = models.BooleanField(null=True)
+    approvedamt = models.FloatField(default=0)
+    requestedamt = models.FloatField()
+    requestdate = models.CharField(max_length=25, default="")
+    responsedate = models.CharField(max_length=25, default="")

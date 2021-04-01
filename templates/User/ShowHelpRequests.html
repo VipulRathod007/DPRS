@@ -1,0 +1,65 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/user.css'%}">
+<link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css'%}">
+<style>
+    .font-mod {
+        font-size: 12.5pt;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<div class="slide-item overlay"
+    style="background-image: url('{% static 'images/reg_banner.jpg' %}'); background-size: cover; background-position: center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 align-self-center text-center mx-auto">
+                <h1 class="heading mb-5">Help Requests</h1>
+                <p><a href="#register" class="btn btn-primary font-mod">Start</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<section class="user-form mt-4 pt-4" id="register">
+    <h2 class="mt-4">Patients' Help Requests</h2>
+
+    <div class="container">
+        {% if requests %}
+        <div class="mb-4 pb-4">
+            <table class="table table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th>Request ID</th>
+                        <th>Patient Name</th>
+                        <th>Hospital Name</th>
+                        <th>Requested Amount</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request, admission in requests.items %}
+                    <tr>
+                        <td>{{request.id}}</td>
+                        <td>{{admission.patientname}}</td>
+                        <td>{{admission.hospitalname}}</td>
+                        <td>{{request.requestedamt}}</td>
+                        <td><a href="">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+    $("#myTable").dataTable();
+</script>
+{% endblock %}

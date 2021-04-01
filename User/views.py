@@ -139,6 +139,7 @@ def dischargePatient(request):
         context['tabTitle'] = "Discharge Patient"
         if request.method == 'POST':
             # if pid == "":
+            ispaid = int(request.POST['ispaid'])
             admissionObj = Admission.objects.filter(id=context['admission-id']).first()
             # else:
             #     admissionObj = Admission.objects.filter(id=pid).first()
@@ -149,6 +150,10 @@ def dischargePatient(request):
             bill = request.FILES['bill']
             billFileName = fs.save("Reports" + str(admissionObj.id) + bill.name, bill)
             admissionObj.bill = ".." + fs.url(billFileName)
+            if ispaid == 1:
+                admissionObj.billpaid = True
+            elif ispaid == 0:
+                admissionObj.billpaid = False
             admissionObj.dischargeDate = datetime.now()
             admissionObj.save()
             request.session.pop('patient_id')
@@ -500,7 +505,20 @@ def ngoProfileView(request):
         return redirect("/user/login/")
 
 
-# Show Particular Patient
+def showHelpRequests(request):
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == "NGOs":
+        context['tabTitle'] = "Patients' Help Request"
+        if request.method == "GET":
+            helpRequests = HelpRequest.objects.filter(ngoid=request.session['current-user'])
+            requests = {}
+            for helpRequest in helpRequests:
+                requests[helpRequest] = Admission.objects.filter(id=helpRequest.admissionid).first()
+            context['requests'] = requests
+            return render(request, "User/ShowHelpRequests.html", context=context)
+    else:
+        return redirect("/user/login/")
+
+
 def showPatientHistory(request,pk):
     if 'current-user' in request.session:
         if Hospital.objects.filter(id=request.session['current-user']).first() is not None:
@@ -518,9 +536,56 @@ def showPatientHistory(request,pk):
         return redirect("/user/login/")
 
 
+def findHelp(request):
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == "Users":
+        context['tabTitle'] = "Find Help"
+        if request.method == "GET":
+            helpRequests = HelpRequest.objects.filter(patientid=request.session['current-user']).order_by('requestdate')
+            alladmissions = Admission.objects.filter(patientid=request.session['current-user']).order_by('admitDate')
+            admissions = []
+            for admission in alladmissions:
+                if not admission.billpaid:
+                    admissions.append(admission)
+            ngoList = NGO.objects.filter(country=User.objects.filter(id=request.session['current-user']).first().country)
+            context['admissions'] = admissions
+            context['ngoList'] = ngoList
+            context['helpRequests'] = helpRequests
+            return render(request, "User/FindHelp.html", context=context)
+        elif request.method == "POST":
+            try:
+                admissionid = int(request.POST['admissionid'])
+                ngoid = int(request.POST['ngoid'])
+                billamt = float(request.POST['billamt'])
+                if admissionid <= 0 or ngoid <= 0:
+                    raise Exception
+                elif billamt <= 0:
+                    messages.warning(request, 'Enter valid amount to request')
+                    return redirect('/user/findHelp/')
+            except:
+                messages.warning(request, 'Invalid Hospital Admission History or NGO Selected!')
+                return redirect('/user/findHelp/')
+            ngoObj = NGO.objects.filter(id=ngoid).first()
+            helpRequest = HelpRequest()
+            helpRequest.ngoid = ngoid
+            helpRequest.admissionid = admissionid
+            admissionObj = Admission.objects.filter(id=admissionid).first()
+            if billamt > admissionObj.billamt:
+                messages.warning(request, "Request amount can not be greater that pending bill amount!")
+                return redirect('/user/findHelp/')
+            helpRequest.hospitalid = admissionObj.hospitalid
+            helpRequest.patientid = admissionObj.patientid
+            helpRequest.isapproved = None
+            helpRequest.requestdate = datetime.date()
+            helpRequest.ngoname = ngoObj.name
+            helpRequest.requestedamt = billamt
+            helpRequest.save()
+            messages.success(request, 'Help Request successfully sent to ' + ngoObj.name)
+            return redirect('/user/findHelp/')
+
+
 # Show Particular Patient
 def showUserHistory(request,pk):
-    if 'current-user' in request.session:
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == "Users":
         if User.objects.filter(id=request.session['current-user']).first() is not None:
             context['tabTitle'] = "Show User History"
             context['user'] = User.objects.filter(id=request.session['current-user']).first()

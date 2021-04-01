@@ -102,7 +102,8 @@
                                         <hr>
                                         {% if "current-user" in request.session %}
                                         {% if request.session.selectedTypeUser == "Users" %}
-                                        <li><a href="#" class="nav-link">Find Help</a></li>
+                                        <li><a href="{% url 'user-findHelp' %}" class="nav-link">Find Help</a></li>
+                                        <li><a href="{% url 'user-findHelp' %}#helprequests" class="nav-link">Help Requests</a></li>
                                         <li><a href="{% url 'admission-history' %}" class="nav-link">Admission History</a></li>
                                         {% endif %}
                                         {% if request.session.selectedTypeUser == "Hospitals" %}
@@ -114,7 +115,7 @@
                                                 Patient</a></li>
                                         {% endif %}
                                         {% if request.session.selectedTypeUser == "NGOs" %}
-                                        <li><a href="#" class="nav-link">Help Requests</a></li>
+                                        <li><a href="{% url 'user-showHelpRequests' %}" class="nav-link">Help Requests</a></li>
                                         {% endif %}
                                         {% endif %}
                                         <li class="has-children">

@@ -1,0 +1,117 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/user.css'%}">
+<link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css'%}">
+<style>
+    .font-mod {
+        font-size: 12.5pt;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<div class="slide-item overlay"
+    style="background-image: url('{% static 'images/reg_banner.jpg' %}'); background-size: cover; background-position: center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 align-self-center text-center mx-auto">
+                <h1 class="heading mb-5">Search NGOs</h1>
+                <p><a href="#register" class="btn btn-primary font-mod">Start</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--User Details -->
+<section class="user-form mt-4 pt-4" id="register">
+    <h2 class="mt-4">Find Helping Hands</h2>
+
+    <div class="container">
+        <form method="POST" action="{% url 'user-findHelp' %}">
+            {% csrf_token %}
+            <div class="">
+                <div class="form-group">
+                    <label class=" control-label" for="admissionid">Hospital Admission Records</label>
+                    <select class="form-control inputselect" id="admissionid" name="admissionid" required>
+                        <option value="-1">--- Select Admission Record ---</option>
+                        {% for admission in admissions %}
+                        <option value="{{admission.id}}">For {{admission.cause}} admitted in
+                            {{admission.hospitalname}} where Pending Bill Amount is {{admission.billamt}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <label class="control-label">Request Amount<span class="required"> *</span></label>
+                        <input type="text" class="form-control" name="billamt" id="billamt"
+                            placeholder="Enter the amount you want to request" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class=" control-label" for="ngoid">NGOs</label>
+                    <select class="form-control inputselect" id="ngoid" name="ngoid" required>
+                        <option value="-1">--- Select NGO ---</option>
+                        {% for ngo in ngoList %}
+                        <option value="{{ngo.id}}">{{ngo.name}}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+        <hr class="container">
+    </div>
+
+    <div id="helprequests" class="mt-4 pt-4">
+        <h2 class="mt-4">Your Requests</h2>
+        <div class="container">
+            {% if helpRequests %}
+            <div class="mb-4 pb-4">
+                <table class="table table-hover" id="myTable">
+                    <thead>
+                        <tr>
+                            <th>Help Request ID</th>
+                            <th>NGO Name</th>
+                            <th>Requested Amount</th>
+                            <th>Requested On</th>
+                            <th>Request Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for helpRequest in helpRequests %}
+                        <tr>
+                            <td>{{helpRequest.id}}</td>
+                            <td>{{helpRequest.ngoname}}</td>
+                            <td>{{helpRequest.requestedamt}}</td>
+                            <td>{{helpRequest.requestdate}}</td>
+                            {% if helpRequest.isapproved %}
+                            <td style="background-color: lightgreen;">{{helpRequest.approvedamt}} Rs.</td>
+                            {% else %}
+                            {% if helpRequest.responsedate == "" %}
+                            <td>Pending</td>
+                            {% else %}
+                            <td>Rejected</td>
+                            {% endif %}
+                            {% endif %}
+                            <td><a href="/user/showPatient/{{helpRequest.admissionid}}">View</a></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <p style="text-align: center;">No Help Requests has been made Yet!</p>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<script>
+    $("#myTable").dataTable();
+</script>
+{% endblock body %}
