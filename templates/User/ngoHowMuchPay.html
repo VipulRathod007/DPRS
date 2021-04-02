@@ -12,7 +12,6 @@
     img {
         margin-top: 10px;
         margin-right: 10px;
-        border-radius: 10px;
         width: 200px;
         height: 200px;
     }
@@ -37,7 +36,7 @@
 <section class="user-form mt-4 pt-4" id="register">
     <h2 class="mt-4">NGO Pay</h2>
 
-    <div class="container">
+    <div class="container mb-4">
         <form action="{% url 'ngo-howMuchPay' %}" class="space-remove" method="POST">
             {% csrf_token %}
             <div class="row">
@@ -120,12 +119,24 @@
                     </div>
                 </div>
 
+                
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
+                        
+                        {% if helpRequest.isapproved %}
+                        <label class="control-label">Amount That NGO Paid To The Patient<span
+                                class="required">
+                                *</span></label>
+                      
+                        <input type="text" class="form-control" value="{{helpRequest.approvedamt}}" required readonly name="helpamt" id="helpamt" >
+
+                        {% else %}
                         <label class="control-label">How Much Amount NGO Want To Pay To The Patient<span
                                 class="required">
                                 *</span></label>
+                      
                         <input type="text" class="form-control" value="" required name="helpamt" id="helpamt" required>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -133,6 +144,7 @@
             </div>
 
             <!-- Button -->
+            {% if not helpRequest.isapproved %}
             <div class="container">
                 <div class="row userprofile-btn">
                     <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
@@ -140,6 +152,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
             <!-- Button Ends -->
         </form>
     </div>
