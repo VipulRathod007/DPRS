@@ -5,9 +5,9 @@
 
 <div class="pt-5 pb-4 bg-primary">
 </div>
-<div class="container mt-4 pt-4" id="login">
-    <h1 style="text-align: center;" class="mt-4 pt-3">Login</h1>
-    <div>
+<div class="container mt-4" id="login">
+    <h1 style="text-align: center;">Login</h1>
+    <!-- <div>
         <form method="POST" action="{% url 'user-loginChoice' %}">
             {% csrf_token %}
             <div class="">
@@ -28,12 +28,26 @@
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-    <hr>
-    {% for type, val in appUsers.login.items %}
-    {% if type == request.session.selectedTypeUser %}
+    <hr> -->
+    
     <div class="my-3">
-        <form class="" action="{{val}}" method="POST">
+        <form class="" action="{% url 'user-login' %}" method="POST">
             {% csrf_token %}
+            <div class="">
+                <div class="form-group">
+                    <label class=" control-label" for="typeUser">Login For</label>
+                    <select class="form-control inputselect" id="typeUser" name="typeUser" required>
+                        <option value="-1">Select your login type</option>
+                        {% for type in appUsers.login %}
+                        {% if type == request.session.selectedTypeUser %}
+                        <option value="{{type}}" selected>{{type}}</option>
+                        {% else %}
+                        <option value="{{type}}">{{type}}</option>
+                        {% endif %}
+                        {% endfor %}
+                    </select>
+                </div>
+            </div>
             <div class="mb-3">
                 <label for="exampleInputEmail1" class="form-label">Email address</label>
                 <input type="email" class="form-control" id="exampleInputEmail1" name="email"
@@ -50,12 +64,11 @@
                     special characters, or emoji.
                 </div>
             </div>
-            <input type="text" value="{{selectedTypeUser}}" name="userType" hidden>
+            <!-- <input type="text" value="{{selectedTypeUser}}" name="userType" hidden> -->
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-    {% endif %}
-    {% endfor %}
+    
     <div class="pt-3">
         <p>Haven't Registered with us? <a href="{% url 'user-registration' %}">Register Here!</a></p>
     </div>

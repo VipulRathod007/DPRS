@@ -24,8 +24,8 @@
         </div>
     </div>
 </div>
-<section class="user-form mt-5" id="register">
-    <h2 class="container">Upload New Profile Picture</h2>
+<section class="user-form mt-4 pt-4" id="register">
+    <h2 class="container mt-4">Upload New Profile Picture</h2>
     <hr class="container">
     <form action="{% url 'user-profilePicEdit' %}" class="space-remove" method="POST" enctype="multipart/form-data">
         {% csrf_token %}

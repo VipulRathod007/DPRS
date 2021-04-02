@@ -5,43 +5,45 @@
 
 <div class="pt-5 pb-4 bg-primary">
 </div>
-<div class="container mt-2" id="login">
-    <h1 style="text-align: center;" class="">Patient's Hospital Admission History</h1>
-    <hr class="">
-    {% if admissions %}
-    <div class="mb-4 pb-4">
-        <table class="table table-hover" id="myTable">
-            <thead>
-                <tr>
-                    <th>Admission ID</th>
-                    <th>Cause</th>
-                    <th>Hospital Name</th>
-                    <th>Admission Date</th>
-                    <th>Status</th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for admission in admissions %}
-                <tr>
-                    <td>{{admission.id}}</td>
-                    <td>{{admission.cause}}</td>
-                    <td>{{admission.hospitalname}}</td>
-                    <td>{{admission.admitDate}}</td>
-                    {% if admission.dischargeDate == "" %}
-                    <td>Currently Admitted</td>
-                    {% else %}
-                    <td>Discharged on {{admission.dischargeDate}}</td>
-                    {% endif %}
-                    <td><a href="/user/admissionHistory/{{admission.id}}">View</a></td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+<div class="container mt-4" id="login">
+    <h2 style="text-align: center;" class="">Patient's Hospital Admission History</h2>
+
+    <div class="my-4 py-4">
+        {% if admissions %}
+        <div class="mb-4 pb-4">
+            <table class="table table-hover" id="myTable">
+                <thead>
+                    <tr>
+                        <th>Admission ID</th>
+                        <th>Cause</th>
+                        <th>Hospital Name</th>
+                        <th>Admission Date</th>
+                        <th>Status</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for admission in admissions %}
+                    <tr>
+                        <td>{{admission.id}}</td>
+                        <td>{{admission.cause}}</td>
+                        <td>{{admission.hospitalname}}</td>
+                        <td>{{admission.admitDate}}</td>
+                        {% if admission.dischargeDate == "" %}
+                        <td>Currently Admitted</td>
+                        {% else %}
+                        <td>Discharged on {{admission.dischargeDate}}</td>
+                        {% endif %}
+                        <td><a href="/user/admissionHistory/{{admission.id}}">View</a></td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p style="text-align: center;">You Have Not Been Admitted Yet!</p>
+        {% endif %}
     </div>
-    {% else %}
-    <p style="text-align: center;">You Have Not Been Admitted Yet!</p>
-    {% endif %}
 </div>
 
 <script>

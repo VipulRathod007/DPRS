@@ -29,7 +29,9 @@
 <section class="user-form mt-4 pt-4" id="register">
     <h2 class="mt-4">Find Helping Hands</h2>
 
+
     <div class="container">
+        {% if admissions %}
         <form method="POST" action="{% url 'user-findHelp' %}">
             {% csrf_token %}
             <div class="">
@@ -39,7 +41,7 @@
                         <option value="-1">--- Select Admission Record ---</option>
                         {% for admission in admissions %}
                         <option value="{{admission.id}}">For {{admission.cause}} admitted in
-                            {{admission.hospitalname}} where Pending Bill Amount is {{admission.billamt}}</option>
+                            {{admission.hospitalname}} where Pending Bill Amount is {{admission.pendingbillamt}}</option>
                         {% endfor %}
                     </select>
                 </div>
@@ -56,16 +58,18 @@
                     <select class="form-control inputselect" id="ngoid" name="ngoid" required>
                         <option value="-1">--- Select NGO ---</option>
                         {% for ngo in ngoList %}
-                        <option value="{{ngo.id}}">{{ngo.name}}</option>
+                        <option value="{{ngo.id}}">{{ngo.name}} situated in {{ngo.city}}, {{ngo.state}}, {{ngo.country}}</option>
                         {% endfor %}
                     </select>
                 </div>
             </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
+        {% else %}
+        <p>You currently don't have any Admission Record to ask help for</p>
+        {% endif %}
         <hr class="container">
     </div>
-
     <div id="helprequests" class="mt-4 pt-4">
         <h2 class="mt-4">Your Requests</h2>
         <div class="container">
@@ -87,32 +91,35 @@
                         {% for helpRequest in helpRequests %}
                         {% if helpRequest.isapproved %}
                         <tr style="background-color: lightgreen!important;">
-                        {% else %}
+                            {% else %}
                         <tr>
-                        {% endif %}
+                            {% endif %}
                             <td hidden></td>
                             <td>{{helpRequest.id}}</td>
                             <td>{{helpRequest.ngoname}}</td>
                             <td>{{helpRequest.requestedamt}}</td>
                             <td>{{helpRequest.requestdate}}</td>
                             {% if helpRequest.responsedate == "" %}
-                                <td>Pending</td>
+                            <td>Pending</td>
                             {% else %}
-                                {% if helpRequest.isapproved %}
-                                    <td>Approved</td>
-                                {% else %}
-                                    <td>Rejected</td>
-                                {% endif %}
+                            {% if helpRequest.isapproved %}
+                            <td>Approved</td>
+                            {% else %}
+                            <td>Rejected</td>
+                            {% endif %}
                             {% endif %}
                             {% if helpRequest.isapproved %}
-                                <td>{{helpRequest.approvedamt}} Rs.</td>
+                            <td>{{helpRequest.approvedamt}} Rs.</td>
                             {% else %}
-                                <td>&nbsp;</td>
+                            <td>&nbsp;</td>
                             {% endif %}
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
+                <br><br>
+                <p><span><b>*</b></span> Help Requests appearing in <b style="color: lightgreen;">Green</b> background
+                    color are the approved requests from respective NGOs.</p>
             </div>
             {% else %}
             <p style="text-align: center;">No Help Requests has been made Yet!</p>

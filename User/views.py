@@ -17,83 +17,98 @@ editFlag = False
 def register(request):
     context['tabTitle'] = "Register"
     if request.method == "POST":
+        typeUser = request.POST['typeUser']
         mail = request.POST['email']
         passwd = request.POST['pass']
-        if User.objects.filter(email=mail).first() is None:
+        tempUser = None
+        if typeUser == '-1':
+            messages.warning(request, "Please Select Valid User Type for Registration!")
+            return redirect(context['appUsers']['login']['Users'])
+        if typeUser == 'Users':
+            matchUser = User.objects.filter(email=mail).first()
             tempUser = User()
+        elif typeUser == 'Hospitals':
+            matchUser = Hospital.objects.filter(email=mail).first()
+            tempUser = Hospital()
+        elif typeUser == 'NGOs':
+            matchUser = NGO.objects.filter(email=mail).first()
+            tempUser = NGO()
+
+        if matchUser is None:
             tempUser.email = mail
             tempUser.passwd = passwd
             tempUser.basicFlag = False
             tempUser.save()
-            request.session['current-user'] = User.objects.filter(email=mail).first().id
+            request.session['current-user'] = tempUser.id
+            request.session['selectedTypeUser'] = typeUser
             context['user'] = tempUser
-            messages.success(request, f"New account created: {User.objects.filter(email=mail).first().email}")
-            return redirect("/user/profile/")
+            messages.success(request, f"New account created: {tempUser.email}")
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
         else:
             context['user'] = None
             context['tabTitle'] = 'Register'
             messages.success(request, f"Account already exists!")
-            return redirect("/user/register/")
+            return redirect(context['appUsers']['register']['Users'])
     elif request.method == "GET":
         if 'current-user' in request.session:
-            return redirect("/user/profile/")
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
         else:
             return render(request, 'User/Register.html', context=context)
 
 
-def hospitalRegister(request):
-    context['tabTitle'] = "Hospital Registration"
-    if request.method == "POST":
-        mail = request.POST['email']
-        passwd = request.POST['pass']
-        if Hospital.objects.filter(email=mail).first() is None:
-            tempUser = Hospital()
-            tempUser.email = mail
-            tempUser.passwd = passwd
-            tempUser.basicFlag = False
-            tempUser.save()
-            request.session['current-user'] = Hospital.objects.filter(email=mail).first().id
-            context['user'] = tempUser
-            messages.success(request, f"New Hospital account created: {Hospital.objects.filter(email=mail).first().email}")
-            return redirect(context['appUsers']['profile']['Hospitals'])
-        else:
-            context['user'] = None
-            context['tabTitle'] = "Hospital Registration"
-            messages.success(request, f"Hospital Account already exists!")
-            return redirect(context['appUsers']['register']['Hospitals'])
-    elif request.method == "GET":
-        if 'current-user' in request.session:
-            return redirect(context['appUsers']['profile']['Hospitals'])
-        else:
-            return render(request, 'User/Register.html', context=context)
-
-
-def ngoRegister(request):
-    context['tabTitle'] = "NGO Registration"
-    if request.method == "POST":
-        mail = request.POST['email']
-        passwd = request.POST['pass']
-        if NGO.objects.filter(email=mail).first() is None:
-            tempUser = NGO()
-            tempUser.email = mail
-            tempUser.passwd = passwd
-            tempUser.basicFlag = False
-            tempUser.save()
-            request.session['current-user'] = NGO.objects.filter(email=mail).first().id
-            context['user'] = tempUser
-            messages.success(request, f"New NGO account created: {NGO.objects.filter(email=mail).first().email}")
-            return redirect(context['appUsers']['profile']['NGOs'])
-        else:
-            context['user'] = None
-            context['tabTitle'] = "NGO Registration"
-            messages.success(request, f"NGO Account already exists!")
-            return redirect(context['appUsers']['register']['NGOs'])
-    elif request.method == "GET":
-        if 'current-user' in request.session:
-            return redirect(context['appUsers']['profile']['NGOs'])
-        else:
-            return render(request, 'User/Register.html', context=context)
-
+# def hospitalRegister(request):
+#     context['tabTitle'] = "Hospital Registration"
+#     if request.method == "POST":
+#         mail = request.POST['email']
+#         passwd = request.POST['pass']
+#         if Hospital.objects.filter(email=mail).first() is None:
+#             tempUser = Hospital()
+#             tempUser.email = mail
+#             tempUser.passwd = passwd
+#             tempUser.basicFlag = False
+#             tempUser.save()
+#             request.session['current-user'] = Hospital.objects.filter(email=mail).first().id
+#             context['user'] = tempUser
+#             messages.success(request, f"New Hospital account created: {Hospital.objects.filter(email=mail).first().email}")
+#             return redirect(context['appUsers']['profile']['Hospitals'])
+#         else:
+#             context['user'] = None
+#             context['tabTitle'] = "Hospital Registration"
+#             messages.success(request, f"Hospital Account already exists!")
+#             return redirect(context['appUsers']['register']['Hospitals'])
+#     elif request.method == "GET":
+#         if 'current-user' in request.session:
+#             return redirect(context['appUsers']['profile']['Hospitals'])
+#         else:
+#             return render(request, 'User/Register.html', context=context)
+#
+#
+# def ngoRegister(request):
+#     context['tabTitle'] = "NGO Registration"
+#     if request.method == "POST":
+#         mail = request.POST['email']
+#         passwd = request.POST['pass']
+#         if NGO.objects.filter(email=mail).first() is None:
+#             tempUser = NGO()
+#             tempUser.email = mail
+#             tempUser.passwd = passwd
+#             tempUser.basicFlag = False
+#             tempUser.save()
+#             request.session['current-user'] = NGO.objects.filter(email=mail).first().id
+#             context['user'] = tempUser
+#             messages.success(request, f"New NGO account created: {NGO.objects.filter(email=mail).first().email}")
+#             return redirect(context['appUsers']['profile']['NGOs'])
+#         else:
+#             context['user'] = None
+#             context['tabTitle'] = "NGO Registration"
+#             messages.success(request, f"NGO Account already exists!")
+#             return redirect(context['appUsers']['register']['NGOs'])
+#     elif request.method == "GET":
+#         if 'current-user' in request.session:
+#             return redirect(context['appUsers']['profile']['NGOs'])
+#         else:
+#             return render(request, 'User/Register.html', context=context)
+#
 
 def login(request):
     context['tabTitle'] = "Login"
@@ -103,17 +118,22 @@ def login(request):
         else:
             return render(request, 'User/Login.html', context=context)
     elif request.method == "POST":
+        typeUser = request.POST['typeUser']
         mail = request.POST['email']
         passwd = request.POST['pass']
-        if request.session['selectedTypeUser'] == 'Users':
+        if typeUser == '-1':
+            messages.warning(request, "Please Select Valid User Type for Registration!")
+            return redirect(context['appUsers']['login']['Users'])
+        if typeUser == 'Users':
             matchUser = User.objects.filter(email=mail).first()
-        elif request.session['selectedTypeUser'] == 'Hospitals':
+        elif typeUser == 'Hospitals':
             matchUser = Hospital.objects.filter(email=mail).first()
-        elif request.session['selectedTypeUser'] == 'NGOs':
+        elif typeUser == 'NGOs':
             matchUser = NGO.objects.filter(email=mail).first()
 
         if matchUser is not None and matchUser.passwd == passwd:
             request.session['current-user'] = matchUser.id
+            request.session['selectedTypeUser'] = typeUser
             context['user'] = matchUser
             context['tabTitle'] = 'Home'
             return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
@@ -140,20 +160,25 @@ def dischargePatient(request):
         if request.method == 'POST':
             # if pid == "":
             ispaid = int(request.POST['ispaid'])
+            userpaid = float(request.POST['userpaid'])
             admissionObj = Admission.objects.filter(id=context['admission-id']).first()
             # else:
             #     admissionObj = Admission.objects.filter(id=pid).first()
             admissionObj.cause = request.POST['cause']
             admissionObj.prescription = request.POST['prescription']
             admissionObj.billamt = float(request.POST['billamt'])
+            if ispaid == 1:
+                admissionObj.billpaid = True
+                admissionObj.pendingbillamt = admissionObj.billamt - userpaid
+                if admissionObj.pendingbillamt < 0:
+                    messages.warning(request, 'Patient can\'t pay more than the Bill Amount')
+                    return redirect('/user/dischargePatient/?id='+str(admissionObj.id))
+            elif ispaid == 0:
+                admissionObj.billpaid = False
             fs = FileSystemStorage()
             bill = request.FILES['bill']
             billFileName = fs.save("Reports" + str(admissionObj.id) + bill.name, bill)
             admissionObj.bill = ".." + fs.url(billFileName)
-            if ispaid == 1:
-                admissionObj.billpaid = True
-            elif ispaid == 0:
-                admissionObj.billpaid = False
             admissionObj.dischargeDate = datetime.now()
             admissionObj.save()
             request.session.pop('patient_id')
@@ -295,12 +320,10 @@ def loginChoice(request):
         choice = request.POST['typeUser']
         if choice == '-1':
             messages.warning(request, "Please Select User Type for Registration!")
-            print(1)
             request.session['selectedTypeUser'] = choice
             return redirect(context['appUsers']['login']['Users'])
         else:
             request.session['selectedTypeUser'] = choice
-            print(2, choice)
             return redirect(context['appUsers']['login'][choice])
     else:
         messages.warning(request, "Invalid Operation!")
@@ -647,7 +670,7 @@ def findHelp(request):
             alladmissions = Admission.objects.filter(patientid=request.session['current-user']).order_by('admitDate')
             admissions = []
             for admission in alladmissions:
-                if not admission.billpaid and admission.billamt > 0 and admission.pendingbillamt > 0:
+                if admission.billamt > 0 and admission.pendingbillamt > 0:
                     admissions.append(admission)
             ngoList = NGO.objects.filter(country=User.objects.filter(id=request.session['current-user']).first().country)
             context['admissions'] = admissions
@@ -672,7 +695,7 @@ def findHelp(request):
             helpRequest.ngoid = ngoid
             helpRequest.admissionid = admissionid
             admissionObj = Admission.objects.filter(id=admissionid).first()
-            if billamt > admissionObj.billamt:
+            if billamt > admissionObj.pendingbillamt:
                 messages.warning(request, "Request amount can not be greater that pending bill amount!")
                 return redirect('/user/findHelp/')
             helpRequest.hospitalid = admissionObj.hospitalid
@@ -683,7 +706,7 @@ def findHelp(request):
             helpRequest.requestedamt = billamt
             helpRequest.save()
             messages.success(request, 'Help Request successfully sent to ' + ngoObj.name)
-            return redirect('/user/findHelp/')
+            return redirect('/user/findHelp/#helprequests')
 
 
 # Show Particular Patient

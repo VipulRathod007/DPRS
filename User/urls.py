@@ -7,8 +7,8 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('register/', register, name='user-registration'),
-    path('hospitalRegister/', hospitalRegister, name='hospital-registration'),
-    path('ngoRegister/', ngoRegister, name='ngo-registration'),
+    path('hospitalRegister/', register, name='hospital-registration'),
+    path('ngoRegister/', register, name='ngo-registration'),
     path('login/', login, name='user-login'),
     path('hospitalLogin/', login, name='hospital-login'),
     path('ngoLogin/', login, name='ngo-login'),
@@ -28,8 +28,8 @@ urlpatterns = [
     path('aadharPicEdit/', aadharPicEdit, name='user-aadharPicEdit'),
     path('findHelp/', findHelp, name='user-findHelp'),
     path('showHelpRequests/', showHelpRequests, name='user-showHelpRequests'),
-    path('registerChoice/', registerChoice, name='user-registerChoice'),
-    path('loginChoice/', loginChoice, name='user-loginChoice'),
+    path('registerChoice/', register, name='user-registerChoice'),
+    path('loginChoice/', login, name='user-loginChoice'),
     path('userProfileView/', userProfileView, name='user-profileView'),
     path('healthIDCardView/', healthIDCardView, name='user-healthIDCardView'),
     path('hospitalProfileView/', hospitalProfileView, name='hospital-profileView'),

@@ -94,17 +94,13 @@
                                 <li class="has-children">
                                     <a href="" class="nav-link">Services</a>
                                     <ul class="dropdown">
-                                        <li><a href="#" class="nav-link">General Surgery</a></li>
-                                        <li><a href="#" class="nav-link">Opthalmology Procedures</a></li>
-                                        <li><a href="#" class="nav-link">Outpatient Services</a></li>
-                                        <li><a href="#" class="nav-link">Radiology and Mammograms</a></li>
-                                        <li><a href="#" class="nav-link">Respiratory</a></li>
-                                        <hr>
                                         {% if "current-user" in request.session %}
                                         {% if request.session.selectedTypeUser == "Users" %}
                                         <li><a href="{% url 'user-findHelp' %}" class="nav-link">Find Help</a></li>
-                                        <li><a href="{% url 'user-findHelp' %}#helprequests" class="nav-link">Help Requests</a></li>
-                                        <li><a href="{% url 'admission-history' %}" class="nav-link">Admission History</a></li>
+                                        <li><a href="{% url 'user-findHelp' %}#helprequests" class="nav-link">Help
+                                                Requests</a></li>
+                                        <li><a href="{% url 'admission-history' %}" class="nav-link">Admission
+                                                History</a></li>
                                         {% endif %}
                                         {% if request.session.selectedTypeUser == "Hospitals" %}
                                         <li><a href="{% url 'admit-patient' %}" class="nav-link">Admit New Patient</a>
@@ -115,17 +111,10 @@
                                                 Patient</a></li>
                                         {% endif %}
                                         {% if request.session.selectedTypeUser == "NGOs" %}
-                                        <li><a href="{% url 'user-showHelpRequests' %}" class="nav-link">Help Requests</a></li>
+                                        <li><a href="{% url 'user-showHelpRequests' %}" class="nav-link">Help
+                                                Requests</a></li>
                                         {% endif %}
                                         {% endif %}
-                                        <li class="has-children">
-                                            <a href="#">More Links</a>
-                                            <ul class="dropdown">
-                                                <li><a href="#">Menu One</a></li>
-                                                <li><a href="#">Menu Two</a></li>
-                                                <li><a href="#">Menu Three</a></li>
-                                            </ul>
-                                        </li>
                                     </ul>
                                 </li>
                                 <li><a href="{% url 'start-about' %}" class="nav-link active">About Us</a></li>
@@ -145,11 +134,14 @@
                                         <li><a href="{% url 'user-aadharPicEdit' %}" class="nav-link">Edit Aadhar
                                                 Copy</a></li>
                                         <hr>
-                                        <li><a href="{% url 'user-profileView' %}" class="nav-link">View Profile</a></li>
-                                        <li><a target="_blank" href="{% url 'user-healthIDCardView' %}" class="nav-link">View Health ID Card</a></li>
-                                        
+                                        <li><a href="{% url 'user-profileView' %}" class="nav-link">View Profile</a>
+                                        </li>
+                                        <li><a target="_blank" href="{% url 'user-healthIDCardView' %}"
+                                                class="nav-link">View Health ID Card</a></li>
+
                                         {% elif request.session.selectedTypeUser == "Hospitals" %}
-                                        <li><a href="{% url 'hospital-profileView' %}" class="nav-link">View Profile</a></li>
+                                        <li><a href="{% url 'hospital-profileView' %}" class="nav-link">View Profile</a>
+                                        </li>
 
                                         {% elif request.session.selectedTypeUser == "NGOs" %}
                                         <li><a href="{% url 'ngo-profileView' %}" class="nav-link">View Profile</a></li>

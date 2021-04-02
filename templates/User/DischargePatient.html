@@ -70,10 +70,12 @@
             {% for admittedPatient in admittedPatients %}
             {% if admittedPatient.patientid == patient.id %}
             <li class="list-group-item active" aria-current="true"><a style="color: white;"
-                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{admittedPatient.patientname}} - Admitted For - {{admittedPatient.cause}}</a></li>
+                    href="/user/dischargePatient/?id={{admittedPatient.id}}">{{admittedPatient.patientname}} - Admitted
+                    For - {{admittedPatient.cause}}</a></li>
             {% else %}
             <li class="list-group-item"><a
-                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{admittedPatient.patientname}} - Admitted For - {{admittedPatient.cause}}</a></li>
+                    href="/user/dischargePatient/?id={{admittedPatient.id}}">{{admittedPatient.patientname}} - Admitted
+                    For - {{admittedPatient.cause}}</a></li>
             {% endif %}
             {% endfor %}
             {% else %}
@@ -116,9 +118,31 @@
                                 style="height: 110px;" name="prescription" required></textarea>
                             {% else %}
                             <textarea placeholder="Description..." class="form-control InputEmail1" id="text-ar"
-                                style="height: 110px;" name="prescription" required>{{admissionDetails.prescription}}</textarea>
+                                style="height: 110px;" name="prescription"
+                                required>{{admissionDetails.prescription}}</textarea>
                             {% endif %}
                         </div>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="ispaid">Did Patient pay bill amount?<span
+                                class="required"> *</span></label>
+                        <select class="form-control inputselect" id="ispaid" name="ispaid" required>
+                            <option value="1">Yes</option>
+                            <option value="0" selected>No</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="ispaid">How much did Patient Pay?<span
+                                class="required"> *</span></label>
+                        <input type="text" class="form-control" name="userpaid" id="userpaid" required>
                     </div>
                 </div>
 
@@ -151,15 +175,6 @@
                     </div>
                 </div>
 
-                <div class="col-md-6  col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        <label class="control-label" for="ispaid">Did Patient pay total bill amount?<span class="required"> *</span></label>
-                        <select class="form-control inputselect" id="ispaid" name="ispaid" required>
-                        <option value="1">Yes</option>
-                        <option value="0" selected>No</option>
-                        </select>
-                    </div>
-                </div>
                 <!-- User Address Details Ends -->
 
                 <!-- Button -->

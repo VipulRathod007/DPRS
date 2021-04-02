@@ -20,8 +20,8 @@
 </div>
 <div class="container mt-4 pt-4" id="register">
     <h1 style="text-align: center;" class="mt-4 pt-3">Registration</h1>
-    <div>
-        <form method="POST" action="{% url 'user-registerChoice' %}">
+    <div class="my-3">
+        <form class="" action="{% url 'user-registration' %}" method="POST">
             {% csrf_token %}
             <div class="">
                 <div class="form-group">
@@ -38,49 +38,28 @@
                     </select>
                 </div>
             </div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email address</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" name="email"
+                    aria-describedby="emailHelp" required>
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" id="exampleInputPassword1" class="form-control" name="pass"
+                    aria-describedby="passwordHelpBlock" required>
+                <div id="passwordHelpBlock" class="form-text">
+                    Your password must be 8-20 characters long, contain letters and numbers, and must not contain
+                    spaces,
+                    special characters, or emoji.
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword2" class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword2" name="pass2" required>
+            </div>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
-    <hr>
-    {% for type, val in appUsers.register.items %}
-        {% if type == request.session.selectedTypeUser %}
-        <div class="my-3">
-            <form class="" action="{{val}}" method="POST">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" name="email"
-                        aria-describedby="emailHelp" required>
-                    <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" id="exampleInputPassword1" class="form-control" name="pass"
-                        aria-describedby="passwordHelpBlock" required>
-                    <div id="passwordHelpBlock" class="form-text">
-                        Your password must be 8-20 characters long, contain letters and numbers, and must not contain
-                        spaces,
-                        special characters, or emoji.
-                    </div>
-                </div>
-                <div class="mb-3">
-                    <label for="exampleInputPassword2" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword2" name="pass2" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Submit</button>
-            </form>
-        </div>
-        {% endif %}
-    {% endfor %}
 </div>
-<script>
-    function validate() {
-        let pass1 = document.getElementById("exampleInputPassword1");
-        let pass2 = document.getElementById("exampleInputPassword2");
-        console.log("Hi");
-        if (pass1 === pass2) {
-            ;
-        }
-    }
-</script>
 {% endblock body %}
