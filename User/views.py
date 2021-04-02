@@ -505,6 +505,98 @@ def ngoProfileView(request):
         return redirect("/user/login/")
 
 
+# NGO's How Much Amount Pay
+def ngoHowMuchPay(request):
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == "NGOs":
+        context['tabTitle'] = "NGO Pay Section"
+
+        if request.method == "GET":
+            helpRequests = HelpRequest.objects.filter(patientid=request.session['current-user']).order_by('requestdate')
+            alladmissions = Admission.objects.filter(patientid=request.session['current-user']).order_by('admitDate')
+            admissions = []
+            for admission in alladmissions:
+                if not admission.billpaid:
+                    admissions.append(admission)
+            context['admissions'] = admissions
+            context['helpRequests'] = helpRequests
+            return render(request, "User/ngoHowMuchPay.html", context=context)
+    else:
+        return redirect("/user/login/")
+
+        # if request.method == 'GET':
+        #     if 'id' in request.GET:
+        #         pid = request.GET['id']
+        #         context['admission-id'] = pid
+        #         admissionObj = Admission.objects.filter(id=pid).first()
+        #         context['patient'] = User.objects.filter(id=admissionObj.patientid).first()
+        #         context['admissionDetails'] = admissionObj
+        #         request.session['patient_id'] = context['patient'].id
+        #     allPatients = Admission.objects.filter(hospitalid=request.session['current-user'])
+        #     admittedPatients = []
+        #     for admittedPatient in allPatients:
+        #         if admittedPatient.dischargeDate == "":
+        #             admittedPatients.append(admittedPatient)
+        #     context['admittedPatients'] = admittedPatients
+            
+        # if request.method == "GET":
+        #     helpRequests = HelpRequest.objects.filter(ngoid=request.session['current-user'])
+        #     requests = {}
+        #     for helpRequest in helpRequests:
+        #         requests[helpRequest] = Admission.objects.filter(id=helpRequest.admissionid).first()
+        #     context['requests'] = requests
+    #     return render(request, "User/ngoHowMuchPay.html", context=context)
+    # else:
+    #     return redirect("/user/login/")
+
+
+        # if 'current-user' in request.session and request.session['selectedTypeUser'] == "NGOs":
+        #     context['tabTitle'] = "Find Help"
+        #     if request.method == "GET":
+        #         helpRequests = HelpRequest.objects.filter(patientid=request.session['current-user']).order_by('requestdate')
+        #         alladmissions = Admission.objects.filter(patientid=request.session['current-user']).order_by('admitDate')
+        #         admissions = []
+        #         for admission in alladmissions:
+        #             if not admission.billpaid:
+        #                 admissions.append(admission)
+        #         ngoList = NGO.objects.filter(country=User.objects.filter(id=request.session['current-user']).first().country)
+        #         context['admissions'] = admissions
+        #         context['ngoList'] = ngoList
+        #         context['helpRequests'] = helpRequests
+        #         return render(request, "User/FindHelp.html", context=context)
+        #     elif request.method == "POST":
+        #         try:
+        #             admissionid = int(request.POST['admissionid'])
+        #             ngoid = int(request.POST['ngoid'])
+        #             billamt = float(request.POST['billamt'])
+        #             if admissionid <= 0 or ngoid <= 0:
+        #                 raise Exception
+        #             elif billamt <= 0:
+        #                 messages.warning(request, 'Enter valid amount to request')
+        #                 return redirect('/user/findHelp/')
+        #         except:
+        #             messages.warning(request, 'Invalid Hospital Admission History or NGO Selected!')
+        #             return redirect('/user/findHelp/')
+        #         ngoObj = NGO.objects.filter(id=ngoid).first()
+        #         helpRequest = HelpRequest()
+        #         helpRequest.ngoid = ngoid
+        #         helpRequest.admissionid = admissionid
+        #         admissionObj = Admission.objects.filter(id=admissionid).first()
+        #         if billamt > admissionObj.billamt:
+        #             messages.warning(request, "Request amount can not be greater that pending bill amount!")
+        #             return redirect('/user/findHelp/')
+        #         helpRequest.hospitalid = admissionObj.hospitalid
+        #         helpRequest.patientid = admissionObj.patientid
+        #         helpRequest.isapproved = None
+        #         helpRequest.requestdate = datetime.date(datetime.now())
+        #         helpRequest.ngoname = ngoObj.name
+        #         helpRequest.requestedamt = billamt
+        #         helpRequest.save()
+        #         messages.success(request, 'Help Request successfully sent to ' + ngoObj.name)
+        #         return redirect('/user/findHelp/')
+
+
+
+
 def showHelpRequests(request):
     if 'current-user' in request.session and request.session['selectedTypeUser'] == "NGOs":
         context['tabTitle'] = "Patients' Help Request"
@@ -575,7 +667,7 @@ def findHelp(request):
             helpRequest.hospitalid = admissionObj.hospitalid
             helpRequest.patientid = admissionObj.patientid
             helpRequest.isapproved = None
-            helpRequest.requestdate = datetime.date()
+            helpRequest.requestdate = datetime.date(datetime.now())
             helpRequest.ngoname = ngoObj.name
             helpRequest.requestedamt = billamt
             helpRequest.save()
