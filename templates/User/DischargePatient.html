@@ -97,7 +97,7 @@
                         <input type="text" class="form-control" name="cause" id="cause" required>
                         {% else %}
                         <input type="text" class="form-control" name="cause" id="cause"
-                            value="{{admissionDetails.cause}}" required readonly>
+                            value="{{admissionDetails.cause}}" required>
                         {% endif %}
                     </div>
                 </div>
@@ -128,8 +128,8 @@
 
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
-                        <label class="control-label" for="ispaid">Did Patient pay bill amount?<span
-                                class="required"> *</span></label>
+                        <label class="control-label" for="ispaid">Did Patient pay bill amount?<span class="required"></span>
+                                *</span></label>
                         <select class="form-control inputselect" id="ispaid" name="ispaid" required>
                             <option value="1">Yes</option>
                             <option value="0" selected>No</option>
@@ -140,8 +140,8 @@
 
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
-                        <label class="control-label" for="ispaid">How much did Patient Pay?<span
-                                class="required"> *</span></label>
+                        <label class="control-label" for="ispaid">How much did Patient Pay?<span class="required">
+                                *</span></label>
                         <input type="text" class="form-control" name="userpaid" id="userpaid" required>
                     </div>
                 </div>
@@ -153,7 +153,8 @@
                         <div class="upload-pic">
                             <label class="control-label mb-3 pb-3" for="InputEmail1">Upload Patient's Reports</label>
                             <div class="mypic text-center mt-4 pt-4">
-                                <img class="img-fluid" src="{{admissionDetails.report}}">
+                                <a href="{{admissionDetails.report}}">
+                                    <img class="img-fluid" src="{{admissionDetails.report}}"></a>
                             </div>
                         </div>
                     </div>

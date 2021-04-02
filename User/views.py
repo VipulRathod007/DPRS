@@ -545,6 +545,9 @@ def ngoHowMuchPay(request):
             if helpamt <= 0:
                 messages.warning(request, 'Shameful Value Inserted!')
                 return redirect('/user/ngoHowMuchPay/?req='+str(helpRequest.id))
+            elif helpamt > helpRequest.requestedamt:
+                messages.warning(request, 'You can only approve the amount upto the Patient\'s request!')
+                return redirect('/user/ngoHowMuchPay/?req='+str(helpRequest.id))
             helpRequest.approvedamt = helpamt
             admissionObj = Admission.objects.filter(id=helpRequest.admissionid).first()
             admissionObj.pendingbillamt -= helpamt
