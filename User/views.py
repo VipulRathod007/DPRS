@@ -47,7 +47,7 @@ def register(request):
         else:
             context['user'] = None
             context['tabTitle'] = 'Register'
-            messages.success(request, f"Account already exists!")
+            messages.warning(request, f"Account already exists!")
             return redirect(context['appUsers']['register']['Users'])
     elif request.method == "GET":
         if 'current-user' in request.session:
@@ -175,6 +175,7 @@ def dischargePatient(request):
                     return redirect('/user/dischargePatient/?id='+str(admissionObj.id))
             elif ispaid == 0:
                 admissionObj.billpaid = False
+                admissionObj.pendingbillamt = admissionObj.billamt
             fs = FileSystemStorage()
             bill = request.FILES['bill']
             billFileName = fs.save("Reports" + str(admissionObj.id) + bill.name, bill)
@@ -527,7 +528,7 @@ def ngoProfileView(request):
     else:
         return redirect(context['appUsers']['login']['Users'])
 
-
+# NGO Pay Panel
 def ngoHowMuchPay(request):
     if 'current-user' in request.session and request.session['selectedTypeUser'] == "NGOs":
         context['tabTitle'] = "NGO Help Section"
