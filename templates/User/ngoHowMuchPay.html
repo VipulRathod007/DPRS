@@ -1,0 +1,176 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/user.css'%}">
+<link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css'%}">
+<style>
+    .font-mod {
+        font-size: 12.5pt;
+    }
+    img {
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 10px;
+    width: 200px;
+    height: 200px;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<div class="slide-item overlay"
+    style="background-image: url('{% static 'images/reg_banner.jpg' %}'); background-size: cover; background-position: center">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 align-self-center text-center mx-auto">
+                <h1 class="heading mb-5">NGO Help Panel</h1>
+                <p><a href="#register" class="btn btn-primary font-mod">Start</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--User Details -->
+<section class="user-form mt-4 pt-4" id="register">
+    <h2 class="mt-4">NGO Pay</h2>
+
+    <div class="container">
+        <!-- <form method="POST" action="{% url 'patient-search' %}">
+            {% csrf_token %}
+            <div class="">
+                <div class="form-group">
+                    <label class=" control-label" for="healthid">Patient's Health ID and Name</label>
+                    {% if "patient_id" in request.session and False %}
+                    <input type="text" class="form-control" name="healthid" id="healthid" value="{{patient.healthid}}">
+                    {% else %}
+                    <select class="form-control inputselect" id="admissionid" name="admissionid" required>
+                        {% if admittedPatients %}
+                        {% for admittedPatient in admittedPatients %}
+                        {% if admittedPatient.patientid == patient.id %}
+                        <option value="{{admittedPatient.id}}" selected><a
+                                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{patient.healthid}} -
+                                {{admittedPatient.patientname}}</a></option>
+                        {% else %}
+                        <option value="{{admittedPatient.id}}"><a
+                                href="/user/dischargePatient/?id={{admittedPatient.id}}">{{patient.healthid}} -
+                                {{admittedPatient.patientname}}</a></option>
+                        {% endif %}
+                        {% endfor %}
+                        {% else %}
+                        <option value="#">Currently No Patients are admitted!</option>
+                        {% endif %}
+                    </select>
+                    {% endif %}
+                    <select class="form-control inputselect" id="redirectUrl" name="redirectUrl" hidden required>
+                        <option value="0">Admit</option>
+                        <option value="1" selected>Discharge</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form> -->
+        <div class="row">
+          <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Patient Name<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{admissionDetails.patientname}}" required readonly name="billamt" id="billamt" required>
+                    </div>
+            </div>
+
+             <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Hospital Name<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{requests.hospitalname}}" required readonly name="billamt" id="billamt" required>
+                    </div>
+            </div>
+
+
+             <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Patient's Admit Date<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{requests.admitDate}}" required readonly name="billamt" id="billamt" required>
+                    </div>
+            </div>
+
+             <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Patient's Discharge Date<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{requests.dischargeDate}}" required readonly name="billamt" id="billamt" required>
+                    </div>
+            </div>
+
+            <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Patient's Reports<span class="required"> *</span></label>
+                        <div class="mypic text-center mt-4 pt-4" readonly>
+                                <img class="img-fluid" src="{{admissionDetails.report}}">
+                        </div>
+                    </div>
+            </div>
+
+             <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Patient's Bill<span class="required"> *</span></label>
+                        <div class="mypic text-center mt-4 pt-4" readonly>
+                                <img class="img-fluid" src="{{admissionDetails.bill}}">
+                        </div>
+                        
+                    </div>
+            </div>
+
+            <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Patient's Bill Amount<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{requests.billamt}}" required readonly name="billamt" id="billamt" required>
+                    </div>
+            </div>
+
+            <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Bill Amount Paid By Patient<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{requests.billpaid}}" required readonly name="billamt" id="billamt" required>
+                    </div>
+            </div>
+
+        
+
+             <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Patient's Requested Amount<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{helpRequests.requestedamt}}" required readonly name="billamt" id="billamt" required>
+                    </div>
+            </div>
+
+             <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Patient's Requested Date<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{helpRequests.requestdate}}" required readonly name="billamt" id="billamt" required>
+                    </div>
+            </div>
+
+
+            <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">How Much Amount NGO Want To Pay To The Patient<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="" required name="billamt" id="billamt" required>
+                    </div>
+            </div>
+        </div>
+
+    </div>
+    
+
+                <!-- Button -->
+                <div class="container">
+                    <div class="row userprofile-btn">
+                        <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                            <button type="submit" class="btn btn-primary text-uppercase text-center">submit</button>
+                        </div>
+                    </div>
+                </div>
+                <!-- Button Ends -->
+           
+</section>
+{% endblock body %}
