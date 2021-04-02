@@ -466,7 +466,7 @@ def userProfileView(request):
         else:
             return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
     else:
-        return redirect("/user/login/")
+        return redirect(context['appUsers']['login']['Users'])
 
 # User's Health ID Card 
 def healthIDCardView(request):
@@ -478,7 +478,7 @@ def healthIDCardView(request):
         else:
             return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
     else:
-        return redirect("/user/login/")
+        return redirect(context['appUsers']['login']['Users'])
 
 # Hospital's Profile
 def hospitalProfileView(request):
@@ -490,7 +490,7 @@ def hospitalProfileView(request):
         else:
             return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
     else:
-        return redirect("/user/login/")
+        return redirect(context['appUsers']['login']['Users'])
 
 # NGO's Profile
 def ngoProfileView(request):
@@ -502,26 +502,37 @@ def ngoProfileView(request):
         else:
             return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
     else:
-        return redirect("/user/login/")
+        return redirect(context['appUsers']['login']['Users'])
 
 
-# NGO's How Much Amount Pay
 def ngoHowMuchPay(request):
     if 'current-user' in request.session and request.session['selectedTypeUser'] == "NGOs":
-        context['tabTitle'] = "NGO Pay Section"
-
+        context['tabTitle'] = "NGO Help Section"
         if request.method == "GET":
-            helpRequests = HelpRequest.objects.filter(patientid=request.session['current-user']).order_by('requestdate')
-            alladmissions = Admission.objects.filter(patientid=request.session['current-user']).order_by('admitDate')
-            admissions = []
-            for admission in alladmissions:
-                if not admission.billpaid:
-                    admissions.append(admission)
-            context['admissions'] = admissions
-            context['helpRequests'] = helpRequests
+            reqid = request.GET['req']
+            helpRequest = HelpRequest.objects.filter(id=reqid).first()
+            admission = Admission.objects.filter(id=helpRequest.admissionid).first()
+            context['admission'] = admission
+            context['helpRequest'] = helpRequest
             return render(request, "User/ngoHowMuchPay.html", context=context)
+        elif request.method == "POST":
+            helpamt = float(request.POST['helpamt'])
+            helpid = int(request.POST['helpid'])
+            helpRequest = HelpRequest.objects.filter(id=helpid).first()
+            if helpamt <= 0:
+                messages.warning(request, 'Shameful Value Inserted!')
+                return redirect('/user/ngoHowMuchPay/?req='+str(helpRequest.id))
+            helpRequest.approvedamt = helpamt
+            admissionObj = Admission.objects.filter(id=helpRequest.admissionid).first()
+            admissionObj.pendingbillamt -= helpamt
+            helpRequest.responsedate = datetime.today()
+            helpRequest.isapproved = True
+            helpRequest.save()
+            admissionObj.save()
+            messages.success(request, 'Help Request successfully Responded!')
+            return redirect('/user/showHelpRequests/')
     else:
-        return redirect("/user/login/")
+        return redirect(context['appUsers']['login']['Users'])
 
         # if request.method == 'GET':
         #     if 'id' in request.GET:
@@ -636,7 +647,7 @@ def findHelp(request):
             alladmissions = Admission.objects.filter(patientid=request.session['current-user']).order_by('admitDate')
             admissions = []
             for admission in alladmissions:
-                if not admission.billpaid:
+                if not admission.billpaid and admission.billamt > 0 and admission.pendingbillamt > 0:
                     admissions.append(admission)
             ngoList = NGO.objects.filter(country=User.objects.filter(id=request.session['current-user']).first().country)
             context['admissions'] = admissions

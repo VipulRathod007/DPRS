@@ -74,31 +74,41 @@
                 <table class="table table-hover" id="myTable">
                     <thead>
                         <tr>
+                            <th hidden></th>
                             <th>Help Request ID</th>
                             <th>NGO Name</th>
                             <th>Requested Amount</th>
                             <th>Requested On</th>
                             <th>Request Status</th>
-                            <th>Actions</th>
+                            <th>Approved Amount</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for helpRequest in helpRequests %}
+                        {% if helpRequest.isapproved %}
+                        <tr style="background-color: lightgreen!important;">
+                        {% else %}
                         <tr>
+                        {% endif %}
+                            <td hidden></td>
                             <td>{{helpRequest.id}}</td>
                             <td>{{helpRequest.ngoname}}</td>
                             <td>{{helpRequest.requestedamt}}</td>
                             <td>{{helpRequest.requestdate}}</td>
-                            {% if helpRequest.isapproved %}
-                            <td style="background-color: lightgreen;">{{helpRequest.approvedamt}} Rs.</td>
-                            {% else %}
                             {% if helpRequest.responsedate == "" %}
-                            <td>Pending</td>
+                                <td>Pending</td>
                             {% else %}
-                            <td>Rejected</td>
+                                {% if helpRequest.isapproved %}
+                                    <td>Approved</td>
+                                {% else %}
+                                    <td>Rejected</td>
+                                {% endif %}
                             {% endif %}
+                            {% if helpRequest.isapproved %}
+                                <td>{{helpRequest.approvedamt}} Rs.</td>
+                            {% else %}
+                                <td>&nbsp;</td>
                             {% endif %}
-                            <td><a href="/user/showPatient/{{helpRequest.admissionid}}">View</a></td>
                         </tr>
                         {% endfor %}
                     </tbody>

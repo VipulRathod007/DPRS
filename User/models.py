@@ -37,6 +37,7 @@ class Admission(models.Model):
     billamt = models.FloatField(max_length=10, default=0)
     prescription = models.CharField(max_length=2250, default="")
     billpaid = models.BooleanField(default=False)
+    pendingbillamt = models.FloatField(default=0)
     admitDate = models.CharField(max_length=100, default="")
     dischargeDate = models.CharField(max_length=100, default="")
     hospitalid = models.IntegerField(max_length=50)

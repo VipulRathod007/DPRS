@@ -44,17 +44,23 @@
                 <tbody>
                     {% for request, admission in requests.items %}
                     <tr>
-                        <td>{{request.id}}</td>
+                        {% if request.responsedate == "" %}
+                            <td>{{request.id}}</td>
+                        {% else %}
+                            <td><button style="background-color: lightgreen; border-radius: 65%; border-width: 0;">&check;</button> {{request.id}}</td>
+                        {% endif %}
                         <td>{{admission.patientname}}</td>
                         <td>{{admission.hospitalname}}</td>
                         <td>{{request.requestedamt}}</td>
-                        <td><a href="/user/ngoHowMuchPay">View</a></td>
+                        <td><a href="{% url 'ngo-howMuchPay' %}?req={{request.id}}">View</a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
         <hr>
+        {% else %}
+        <p>No Patients Admitted Yet!</p>
         {% endif %}
     </div>
 </section>
