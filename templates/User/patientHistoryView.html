@@ -61,7 +61,16 @@
         <div class="row">
             <div class="col-lg-6 align-self-center text-center mx-auto">
                 <h1 class="heading mb-5">Welcome {{admission.patientname}}</h1>
-                <p><a href="#down" class="btn btn-primary font-mod">Start</a></p>
+
+                 <div class="btn-group">
+                    <div class="container">
+                    <a href="#down" class="btn btn-primary active" aria-current="page"><h6>Current History</h6></a>
+                    </div>
+                    <div class="container">
+                    <a href="/user/usersPastHistoryInHospital/{{admission.patientid}}" class="btn btn-primary"><h6>Past History</h6></a>
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>

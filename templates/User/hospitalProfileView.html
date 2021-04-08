@@ -165,6 +165,15 @@
                     <h5><b>Hospital Type</b></h5>
                 </td>
                 <td>
+                    <div class="control-label"> {{user.hospitalType}} </div>
+                </td>
+            </tr>
+
+            <tr>
+                <td class="table">
+                    <h5><b>Hospital Specification</b></h5>
+                </td>
+                <td>
                     <div class="control-label"> {{user.hospitalSpec}} </div>
                 </td>
             </tr>
@@ -174,7 +183,11 @@
                     <h5><b>Does Hospital Accepts Government Relief Schemes?</b></h5>
                 </td>
                 <td>
-                    <div class="control-label"> {{user.isGranted}} </div>
+                    {% if user.isGranted == True %}
+                    <div class="control-label"> Yes </div>
+                    {% else %}
+                    <div class="control-label"> No </div>
+                    {% endif %}
                 </td>
             </tr>
 
