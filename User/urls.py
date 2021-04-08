@@ -37,6 +37,7 @@ urlpatterns = [
     path('showPatient/<int:pk>/', showPatientHistory, name = 'show-patient'),
     path('admissionHistory/<int:pk>/', showUserHistory, name = 'show-user'),
     path('ngoHowMuchPay/', ngoHowMuchPay, name='ngo-howMuchPay'),
+    path('usersPastHistoryInHospital/<int:pk>/', usersPastHistoryInHospital, name='users-pastHistoryInHospital'),
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

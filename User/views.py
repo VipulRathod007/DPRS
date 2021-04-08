@@ -176,6 +176,10 @@ def dischargePatient(request):
             elif ispaid == 0:
                 admissionObj.billpaid = False
                 admissionObj.pendingbillamt = admissionObj.billamt
+                if userpaid:
+                    messages.warning(request, 'Here You Selected Patient didn\'t pay any Bill Amount But After You Filled Bill Amount That Patient Paid!')
+                    return redirect('/user/dischargePatient/?id='+str(admissionObj.id))
+
             fs = FileSystemStorage()
             bill = request.FILES['bill']
             billFileName = fs.save("Reports" + str(admissionObj.id) + bill.name, bill)
@@ -250,6 +254,13 @@ def admitPatient(request):
             admissionObj.patientid = userObj.id
             admissionObj.hospitalid = hospitalObj.id
             admissionObj.prescription = prescription
+
+            admissions = Admission.objects.filter(hospitalid=request.session['current-user'])
+            for admission in admissions:
+                    if userObj.id == admission.patientid and not admission.dischargeDate:
+                        messages.warning(request, f"This Patient is Already Admitted!")
+                        return render(request, 'User/AdmitPatient.html', context=context)
+            
             admissionObj.report = ".." + fs.url(reportFileName)
             admissionObj.patientname = userObj.fname + ' ' + userObj.lname
             admissionObj.admitDate = datetime.now()
@@ -275,6 +286,16 @@ def patientSearch(request):
                 try:
                     request.session['patient_id'] = int(healthid)
                     context['patient'] = User.objects.filter(healthid=healthid).first()
+
+                    userObj = User.objects.filter(healthid=healthid).first()
+                    # admissionObj = Admission()
+                    # admissionObj.patientid = userObj.id
+                    admissions = Admission.objects.filter(hospitalid=request.session['current-user'])
+                    for admission in admissions:
+                        if userObj.id == admission.patientid and not admission.dischargeDate:
+                            messages.warning(request, f"This Patient is Already Admitted!")
+                            return render(request, 'User/AdmitPatient.html', context=context)
+
                     if context['patient'] is None:
                         messages.warning(request, "Invalid Health ID of the Patient!")
                         request.session.pop('patient_id')
@@ -543,12 +564,26 @@ def ngoHowMuchPay(request):
             helpamt = float(request.POST['helpamt'])
             helpid = int(request.POST['helpid'])
             helpRequest = HelpRequest.objects.filter(id=helpid).first()
-            if helpamt <= 0:
+            admissionObj = Admission.objects.filter(id=helpRequest.admissionid).first()
+            if helpamt < 0:
                 messages.warning(request, 'Shameful Value Inserted!')
                 return redirect('/user/ngoHowMuchPay/?req='+str(helpRequest.id))
             elif helpamt > helpRequest.requestedamt:
                 messages.warning(request, 'You can only approve the amount upto the Patient\'s request!')
                 return redirect('/user/ngoHowMuchPay/?req='+str(helpRequest.id))
+            elif helpamt > admissionObj.pendingbillamt:
+                messages.warning(request, 'You can only approve the amount upto the Patient\'s Pending Bill Amount!')
+                return redirect('/user/ngoHowMuchPay/?req='+str(helpRequest.id))
+            elif helpamt == 0:
+                helpRequest.approvedamt = helpamt
+                admissionObj = Admission.objects.filter(id=helpRequest.admissionid).first()
+                admissionObj.pendingbillamt -= helpamt
+                helpRequest.responsedate = datetime.today()
+                helpRequest.isapproved = False
+                helpRequest.save()
+                admissionObj.save()
+                messages.success(request, 'Help Request successfully Responded!')
+                return redirect('/user/showHelpRequests/')
             helpRequest.approvedamt = helpamt
             admissionObj = Admission.objects.filter(id=helpRequest.admissionid).first()
             admissionObj.pendingbillamt -= helpamt
@@ -664,6 +699,43 @@ def showPatientHistory(request,pk):
             return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
     else:
         return redirect("/user/login/")
+
+
+
+# Past History Of User In Hospital Panel
+def usersPastHistoryInHospital(request,pk):
+
+    if 'current-user' in request.session:
+        if Hospital.objects.filter(id=request.session['current-user']).first() is not None:
+            context['tabTitle'] = "Show Patient History"
+            context['user'] = Hospital.objects.filter(id=request.session['current-user']).first()
+            admissions = Admission.objects.filter(hospitalid=request.session['current-user'])
+
+            # for admission in admissions:
+            #     if admission.id == pk:
+            context['admission'] = admissions
+            context['pk'] = pk
+            return render(request, "User/usersPastHistoryInHospital.html", context=context)
+        else:
+            return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
+    else:
+        return redirect(context['appUsers']['login']['Users'])
+
+    # if 'current-user' in request.session and request.session['selectedTypeUser'] == "Hospitals":
+    #     context['tabTitle'] = "User's Past Admission History"
+    #     users = User.objects.filter(id=request.session['current-user'])
+    #     admissions = Admission.objects.filter(patientid=request.session['current-user'])
+    #     hospitalDetails = []
+    #     for admission in admissions:
+    #         if admission.patientid == users.id:    
+    #             hospitalDetails.append(Hospital.objects.filter(id=admission.patientid).first())
+    #     context['hospitalDetails'] = hospitalDetails
+    #     context['admissions'] = admissions
+    #     context['user'] = users
+    #     return render(request, "User/usersPastHistoryInHospital.html", context=context)
+    # else:
+    #     messages.warning(request, f"Access Denied!")
+    #     return redirect(context['appUsers']['login']['Users'])
 
 
 def findHelp(request):
