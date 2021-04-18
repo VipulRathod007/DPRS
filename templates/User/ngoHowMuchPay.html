@@ -97,6 +97,27 @@
                     </div>
                 </div>
 
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+
+                        {% if helpRequest.isapproved or helpRequest.responsedate %}
+                        <label class="control-label">Amount That NGO Paid To The Patient<span
+                                class="required">
+                                *</span></label>
+
+                        <input type="text" class="form-control" value="{{helpRequest.approvedamt}}" required readonly name="helpamt" id="helpamt" >
+
+                        {% else %}
+                        <label class="control-label">How Much Amount NGO Want To Pay To The Patient<span
+                                class="required">
+                                *</span></label>
+
+                        <input type="text" class="form-control" value="" required name="helpamt" id="helpamt" required>
+                        {% endif %}
+                    </div>
+                </div>
+
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
                         <label class="control-label">Patient's Reports<span class="required"> *</span></label>
@@ -116,27 +137,6 @@
                                 <img class="img-fluid" src="{{admission.bill}}">
                             </a>
                         </div>
-                    </div>
-                </div>
-
-                
-                <div class="col-md-6  col-sm-6 col-xs-12">
-                    <div class="form-group">
-                        
-                        {% if helpRequest.isapproved or helpRequest.responsedate %}
-                        <label class="control-label">Amount That NGO Paid To The Patient<span
-                                class="required">
-                                *</span></label>
-                      
-                        <input type="text" class="form-control" value="{{helpRequest.approvedamt}}" required readonly name="helpamt" id="helpamt" >
-
-                        {% else %}
-                        <label class="control-label">How Much Amount NGO Want To Pay To The Patient<span
-                                class="required">
-                                *</span></label>
-                      
-                        <input type="text" class="form-control" value="" required name="helpamt" id="helpamt" required>
-                        {% endif %}
                     </div>
                 </div>
 
