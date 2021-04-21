@@ -91,6 +91,19 @@ class NGO(models.Model):
             return self.name
 
 
+class Bill(models.Model):
+    admissionid = models.IntegerField()
+    billamt = models.FloatField(max_length=10, default=0)
+    billpaid = models.BooleanField(default=False)
+    pendingbillamt = models.FloatField(default=0)
+    billImg = models.CharField(max_length=250, default="")
+    timeofBillAddition = models.CharField(max_length=50, default="")
+    billDesc = models.CharField(max_length=350, default="")
+
+    def __str__(self):
+        return "Bill of " + str(self.billamt) + " Rs"
+
+
 class HelpRequest(models.Model):
     patientid = models.IntegerField()
     hospitalid = models.IntegerField()

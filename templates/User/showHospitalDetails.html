@@ -1,0 +1,55 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block style %}
+<style>
+    th{
+        width: 35%;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<div class="pt-5 pb-4 bg-primary">
+</div>
+<div class="container mt-4" id="login">
+    <h1 style="text-align: center;">Details of <span style="color: lightskyblue;">{{hospital.name}}</span></h1>
+    <table class="table table-hover">
+        <tbody>
+            <tr>
+                <th scope="row">Email Address</th>
+                <td>{{hospital.email}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Contact No.</th>
+                <td>{{hospital.contact}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Hospital's Official Website</th>
+                <td>{{hospital.website}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Address</th>
+                <td>{{hospital.address}} <br>{{hospital.city}}, {{hospital.state}}, {{hospital.country}} - {{hospital.zipcode}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Is Hospital Granted by Government?</th>
+                {% if hospital.isGranted %}
+                    <td>Yes</td>
+                {% else %}
+                    <td>No</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th scope="row">Hospital's Specifications</th>
+                <td>{{hospital.hospitalSpec}}</td>
+            </tr>
+            <tr>
+                <th scope="row">Hospital's Type</th>
+                <td>{{hospital.hospitalType}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endblock body %}

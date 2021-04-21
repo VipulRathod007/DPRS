@@ -50,7 +50,7 @@
                             <td><button style="background-color: lightgreen; border-radius: 65%; border-width: 0;">&check;</button> {{request.id}}</td>
                         {% endif %}
                         <td>{{admission.patientname}}</td>
-                        <td>{{admission.hospitalname}}</td>
+                        <td><a href="{% url 'ngo-showHospitalDetails' %}?id={{request.hospitalid}}">{{admission.hospitalname}}</a></td>
                         <td>{{request.requestedamt}}</td>
                         <td><a href="{% url 'ngo-howMuchPay' %}?req={{request.id}}">View</a></td>
                     </tr>

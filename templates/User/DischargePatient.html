@@ -105,8 +105,15 @@
 
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
-                        <label class="control-label">Total Bill<span class="required"> *</span></label>
-                        <input type="text" class="form-control" name="billamt" id="billamt" required>
+                        <label class="control-label">Total Bill Amount<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{admissionDetails.billamt}}" name="billamt" id="billamt" readonly required>
+                    </div>
+                </div>
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Total Pending Bill Amount<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{admissionDetails.pendingbillamt}}" name="billamt" id="billamt" readonly required>
                     </div>
                 </div>
                 <!--Please List Patient's Current Medications -->
@@ -129,9 +136,11 @@
 
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
-                        <label class="control-label" for="ispaid">Did Patient pay bill amount?<span class="required"></span>
-                                *</span></label>
-                        <select class="form-control inputselect" id="ispaid" name="ispaid" required>
+                        <label class="control-label" for="ispaid">Did Patient pay bill amount?<span
+                                class="required"></span>
+                            *</span></label>
+                        <select class="form-control inputselect" id="ispaid" name="ispaid" required
+                            onchange="showPayField()">
                             <option value="1">Yes</option>
                             <option value="0" selected>No</option>
                         </select>
@@ -139,11 +148,11 @@
                 </div>
 
 
-                <div class="col-md-6  col-sm-6 col-xs-12">
+                <div class="col-md-6  col-sm-6 col-xs-12" id="payAmt" hidden>
                     <div class="form-group">
-                        <label class="control-label" for="ispaid">How much did Patient Pay?<span class="required">
+                        <label class="control-label" for="userpaid">How much did Patient Pay?<span>
                                 *</span></label>
-                        <input type="text" class="form-control" name="userpaid" id="userpaid" required>
+                        <input type="text" class="form-control" name="userpaid" id="userpaid">
                     </div>
                 </div>
 
@@ -152,10 +161,13 @@
                 <div class="col-md-6  col-sm-6 col-xs-12">
                     <div class="form-group">
                         <div class="upload-pic">
-                            <label class="control-label mb-3 pb-3" for="InputEmail1">Upload Patient's Reports</label>
-                            <div class="mypic text-center mt-4 pt-4">
+                            <label class="control-label mb-3 pb-3" for="InputEmail1">Uploaded Patient's
+                                Reports</label>
+                            <div class="mypic text-center mt-4">
                                 <a href="{{admissionDetails.report}}" target="_blank">
-                                    <img class="img-fluid" style="margin-top: 10px; margin-right: 10px; height: 150px; width: 200px;" src="{{admissionDetails.report}}"></a>
+                                    <img class="img-fluid"
+                                        style="margin-top: 10px; margin-right: 10px; height: 150px; width: 200px;"
+                                        src="{{admissionDetails.report}}"></a>
                             </div>
                         </div>
                     </div>
@@ -180,7 +192,7 @@
                 <!-- User Address Details Ends -->
 
                 <!-- Button -->
-                <div class="container">
+                <div class="container mt-4 pt-4">
                     <div class="row userprofile-btn">
                         <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
                             <button type="submit" class="btn btn-primary text-uppercase text-center">submit</button>
@@ -193,4 +205,17 @@
     </form>
     {% endif %}
 </section>
+
+<script>
+    flag = false;
+    function showPayField() {
+        if (document.getElementById("ispaid").value == 1) {
+            document.getElementById("payAmt").hidden = false;
+            document.getElementById("userpaid").setAttribute("required");
+        } else if (document.getElementById("ispaid").value == 0) {
+            document.getElementById("payAmt").hidden = true;
+            document.getElementById("userpaid").removeAttribute("required");
+        }
+    }
+</script>
 {% endblock body %}

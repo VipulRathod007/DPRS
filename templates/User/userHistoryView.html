@@ -12,9 +12,15 @@
 <!--bootstrap.css file-->
 <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js" integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js" integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"
+    integrity="sha384-SR1sx49pcuLnqZUnnPwx6FCym0wLsk5JZuNx2bPPENzswTNFaQU1RDvt3wT4gWFG"
+    crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.min.js"
+    integrity="sha384-j0CNLUeiqtyaRmlzUHCPZ+Gy5fQu0dQ6eZ/xAww941Ai1SxSY+0EQqNXNE6DZiVc"
+    crossorigin="anonymous"></script>
 
 
 
@@ -23,33 +29,32 @@
         font-size: 12.5pt;
     }
 
-    
+
     .card {
-    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    width: 60%;
-    border-radius: 10px;
-    margin: auto;
-    margin-top: 25px;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        transition: 0.3s;
+        width: 60%;
+        border-radius: 10px;
+        margin: auto;
+        margin-top: 25px;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     }
 
     .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
     }
 
     img {
-    margin-top: 10px;
-    margin-right: 10px;
-    border-radius: 10px;
-    width: 200px;
-    height: 200px;
+        margin-top: 10px;
+        margin-right: 10px;
+        border-radius: 10px;
+        width: 200px;
+        height: 200px;
     }
 
     .container {
         margin: auto;
     }
-    
 </style>
 {% endblock style %}
 
@@ -61,112 +66,122 @@
         <div class="row">
             <div class="col-lg-6 align-self-center text-center mx-auto">
                 <h1 class="heading mb-5">Welcome {{admission.patientname}}</h1>
-                <p><a href="#down" class="btn btn-primary font-mod">Start</a></p>
+                <div class="btn-group">
+                    <div class="container">
+                        <a href="#down" class="btn btn-primary active" aria-current="page">
+                            <h6>Current History</h6>
+                        </a>
+                    </div>
+                    <div class="container">
+                        <a href="#bills" class="btn btn-primary" aria-current="page">
+                            <h6>Bills</h6>
+                        </a>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </div>
 
 
+<div class="card mt-4 pt-4" style="margin-bottom: 20px;" id="down">
+    <div class="container mt-4 pt-4">
+        <h1 style="text-align: center; margin: auto; ">Patient's Details</h1>
+        <hr>
+    </div>
+
+    <div class="container">
+
+        <table class="table table-striped table-hover">
+            <div class="container">
 
 
- <div class="card mt-4 pt-4" style="margin-bottom: 20px;" id="down">
-     <div class="container mt-4 pt-4">
-         <h1 style="text-align: center; margin: auto; ">Patient's Details</h1>
-         <hr>
-     </div>
-     
-     <div class="container">
-         
-         <table class="table table-striped table-hover">
-            <div class="container">         
-
-
-            <tr>
-                 <td class="table">
-                    <h5><b>Patient's ID</b></h5> 
-                 </td>
-                 <td>
-                     <div class="control-label"> {{user.id}} </div>
-                 </td>
-             </tr>
-             
-             <tr>
-                 <td class="table">
-                    <h5><b>Patient's Health ID</b></h5> 
-                 </td>
-                 <td>
-                     <div class="control-label"> {{user.healthid}} </div>
-                 </td>
-             </tr>
-
-
-              <tr>
-                 <td class="table">
-                    <h5><b>Patient's Hospital Name</b></h5> 
-                 </td>
-                 <td>
-                     <div class="control-label"> {{admission.hospitalname}} </div> 
-                 </td>
-             </tr>
-
-
-              <tr>
-                 <td class="table">
-                    <h5><b>Patient's Admit Date</b></h5>     
-                 </td>
-                 <td>
-                     <div class="control-label"> {{admission.admitDate}} </div> 
-                 </td>
-             </tr>
-
-
-             <tr>
-                 <td class="table">
-                    <h5><b>Reason behind Admission</b></h5> 
-                 </td>
-                 <td>
-                     <div class="control-label"> {{admission.cause}} </div> 
-                 </td>
-             </tr>
- 
-             <tr>
-                 <td class="table">
-                    <h5><b>Patient's Reports</b></h5>     
-                 </td>
-                 <td>
-                     <div class="control-label"> <a href="../{{admission.report}}" target="_blank"> <img src="../{{admission.report}}"> </a> </div> 
-                 </td>
-             </tr>
- 
-             <tr>
-                 <td class="table">
-                    <h5><b>Patient's Prescription</b></h5>
-                 </td>
-                 <td>
-                     <div class="control-label"> {{admission.prescription}} </div> 
-                 </td>
-             </tr>
-            
-       
-        {% if admission.dischargeDate %}
-            
-          
                 <tr>
                     <td class="table">
-                        <h5><b>Patient's Discharge Date</b></h5>     
+                        <h5><b>Patient's ID</b></h5>
                     </td>
                     <td>
-                        <div class="control-label"> {{admission.dischargeDate}} </div> 
+                        <div class="control-label"> {{user.id}} </div>
                     </td>
                 </tr>
 
                 <tr>
                     <td class="table">
-                        <h5><b>Patient's Total Bill</b></h5>     
+                        <h5><b>Patient's Health ID</b></h5>
                     </td>
                     <td>
-                        <div class="control-label"> {{admission.billamt}} Rs. </div> 
+                        <div class="control-label"> {{user.healthid}} </div>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="table">
+                        <h5><b>Patient's Hospital Name</b></h5>
+                    </td>
+                    <td>
+                        <div class="control-label"> {{admission.hospitalname}} </div>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="table">
+                        <h5><b>Patient's Admit Date</b></h5>
+                    </td>
+                    <td>
+                        <div class="control-label"> {{admission.admitDate}} </div>
+                    </td>
+                </tr>
+
+
+                <tr>
+                    <td class="table">
+                        <h5><b>Reason behind Admission</b></h5>
+                    </td>
+                    <td>
+                        <div class="control-label"> {{admission.cause}} </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="table">
+                        <h5><b>Patient's Reports</b></h5>
+                    </td>
+                    <td>
+                        <div class="control-label"> <a href="../{{admission.report}}" target="_blank"> <img
+                                    src="../{{admission.report}}"> </a> </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="table">
+                        <h5><b>Patient's Prescription</b></h5>
+                    </td>
+                    <td>
+                        <div class="control-label"> {{admission.prescription}} </div>
+                    </td>
+                </tr>
+
+
+                {% if admission.dischargeDate %}
+
+
+                <tr>
+                    <td class="table">
+                        <h5><b>Patient's Discharge Date</b></h5>
+                    </td>
+                    <td>
+                        <div class="control-label"> {{admission.dischargeDate}} </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="table">
+                        <h5><b>Patient's Total Bill</b></h5>
+                    </td>
+                    <td>
+                        <div class="control-label"> {{admission.billamt}} Rs. </div>
                     </td>
                 </tr>
 
@@ -178,36 +193,115 @@
                         <div class="control-label"> {{admission.pendingbillamt}} Rs. </div>
                     </td>
                 </tr>
-    
+
                 <tr>
                     <td class="table">
-                        <h5><b>Patient's Bill Picture</b></h5> 
+                        <h5><b>Patient's Bill Picture</b></h5>
                     </td>
                     <td>
-                        <div class="control-label"> <a href="../{{admission.bill}}" target="_blank"> <img src="../{{admission.bill}}"> </a> </div> 
+                        <div class="control-label"> <a href="../{{admission.bill}}" target="_blank"> <img
+                                    src="../{{admission.bill}}"> </a> </div>
                     </td>
                 </tr>
-           
- 
-        {% else %}
-                
-            
+
+
+                {% else %}
+
+
                 <tr>
                     <td class="table">
-                        <h5><b>Patient's Discharge Date</b></h5>     
+                        <h5><b>Patient's Discharge Date</b></h5>
                     </td>
                     <td>
-                        <div class="control-label"> Still in Admitted! </div> 
+                        <div class="control-label"> Still in Admitted! </div>
                     </td>
                 </tr>
-                   
-           
-                
-        {% endif %}
+
+
+
+                {% endif %}
+            </div>
+        </table>
+    </div>
+</div>
+
+</div>
+<div class="mt-2" id="bills">
+    <br>
+</div>
+<div class="user-form mt-4 pt-4">
+    <h2>Bills added of {{admission.patientname}}</h2>
+</div>
+<div class="container mt-2">
+    {% if bills %}
+    <label class=" control-label" for="healthid">Patient's Bills</label>
+    <ul class="list-group" style="width: 100%;" id="healthid">
+        {% for bill in bills %}
+        <tr>
+            <div class="row">
+                <td class="">
+                    <li class="list-group-item" style="width: 90%;">{{bill.billDesc}} with Bill Amount of
+                        {{bill.billamt}} Rs. added on
+                        {{bill.timeofBillAddition}}</li>
+                </td>
+                <td>
+                    <button type="button"
+                        style="border-radius: 5%; padding: 5px; background-color: #3c90f7; color: white;" class="btn"
+                        onclick="document.getElementById('{{bill.id}}').hidden = false;">Show</button>
+                </td>
+            </div>
+        </tr>
+        <div class="container" hidden id="{{bill.id}}" style="">
+            <div class="row mt-4">
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Bill Amount<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{bill.billamt}}" name="billamt" id="billamt"
+                            readonly required>
+                    </div>
                 </div>
-            </table>
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="upload-pic">
+                            <label class="control-label mb-3 pb-3" for="InputEmail1">Uploaded Patient's
+                                Bill</label>
+                            <div class="mypic text-center mt-4">
+                                <a href="/user/{{bill.billImg}}" target="_blank">
+                                    <img class="img-fluid"
+                                        style="margin-top: 10px; margin-right: 10px; height: 150px; width: 200px;"
+                                        src="/user/{{bill.billImg}}"></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label">Pending Bill Amount<span class="required"> *</span></label>
+                        <input type="text" class="form-control" value="{{bill.pendingbillamt}}" name="billamt"
+                            id="billamt" readonly required>
+                    </div>
+                </div>
+            </div>
+
+            <button type="button" onclick="document.getElementById('{{bill.id}}').hidden = true;"
+                style="margin-left: -35px;" class="btn btn-primary text-uppercase text-center">Close</button>
+            <div class="container">
+                <div class="row ">
+                    <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    </div>
+                </div>
+            </div>
+            <hr>
         </div>
-     </div>
+        {% endfor %}
+    </ul>
+    <br>
+    {% else %}
+    <p><span style="background-color: black; color: white;" class="px-2">Currently No Bills are added!</span></p>
+    {% endif %}
+</div>
 
 
 {% endblock %}

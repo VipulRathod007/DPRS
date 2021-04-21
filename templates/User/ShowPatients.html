@@ -18,6 +18,7 @@
                     <th>Admission Date</th>
                     <th>Patient's Details</th>
                     <th>Admit Status</th>
+                    <th>Add New Bill</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,6 +32,11 @@
                         <td><a href="/user/dischargePatient/?id={{admission.id}}">Discharge</a></td>
                     {% else %}
                         <td>Discharged on {{admission.dischargeDate}}</td>
+                    {% endif %}
+                    {% if admission.dischargeDate == "" %}
+                        <td><a href="/user/addNewBill/?id={{admission.id}}" class="btn btn-primary" style="border-radius: 5%; padding: 5px;">+ Bill</a></td>
+                    {% else %}
+                        <td></td>
                     {% endif %}
                 </tr>
                 {% endfor %}

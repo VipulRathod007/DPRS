@@ -1,0 +1,108 @@
+{% extends 'Main/base.html' %}
+{% load static %}
+
+{% block style %}
+<link rel="stylesheet" href="{% static 'css/user.css'%}">
+<link rel="stylesheet" href="{% static 'fonts/font-awesome/css/font-awesome.min.css'%}">
+<style>
+    .font-mod {
+        font-size: 12.5pt;
+    }
+</style>
+{% endblock style %}
+
+{% block body %}
+
+<div class="pt-5 pb-4 bg-primary">
+</div>
+
+<section class="user-form" id="register">
+    <h2 class="container">Add New Bill for {{admission.patientname}}</h2>
+    <hr class="container">
+    <form action="{% url 'hospital-addNewBill' %}" class="space-remove" method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container">
+            <div class="row mt-4">
+
+                <input type="text" id="admissionid" name="admissionid" value="{{admission.id}}" required hidden>
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="textarea-input dashboard ">
+                            <label class="control-label">Bill's Description *</label>
+                            <textarea placeholder="Description..." class="form-control InputEmail1" id="text-ar"
+                                style="height: 110px;" name="billDesc" required></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="billamt">Bill Amount<span class="required"> *</span></label>
+                        <input type="text" class="form-control" id="billamt" name="billamt" required>
+                    </div>
+                </div>
+
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <label class="control-label" for="ispaid">Did Patient pay some of the bill amount?<span
+                                class="required"></span>
+                            *</span></label>
+                        <select class="form-control inputselect" id="ispaid" name="ispaid" required
+                            onchange="showPayField()">
+                            <option value="1">Yes</option>
+                            <option value="0" selected>No</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="col-md-6  col-sm-6 col-xs-12" id="payAmt" hidden>
+                    <div class="form-group">
+                        <label class="control-label" for="userpaid">How much did Patient Pay?<span>
+                                *</span></label>
+                        <input type="text" class="form-control" name="userpaid" id="userpaid">
+                    </div>
+                </div>
+
+                <!--Upload Image -->
+                <div class="col-md-6  col-sm-6 col-xs-12">
+                    <div class="form-group">
+                        <div class="upload-pic">
+                            <label class="control-label" for="billPic">Bill's Picture *</label>
+                            <input type="file" class="form-control InputEmail1" aria-describedby="emailHelp"
+                                name="billPic" id="billPic" required>
+                            <div class="mypic text-center">
+                                <img class="img-fluid" src="{% static 'images/upload.png' %}">
+                                <h6>Upload a picture</h6>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Button -->
+        <div class="container">
+            <div class="row userprofile-btn">
+                <div class="col-md-12 col-lg-12 col-sm-12 col-xs-12">
+                    <button type="submit" class="btn btn-primary text-uppercase text-center">submit</button>
+                </div>
+            </div>
+        </div>
+        <!-- Button Ends -->
+    </form>
+</section>
+
+<script>
+    flag = false;
+    function showPayField() {
+        if (document.getElementById("ispaid").value == 1) {
+            document.getElementById("payAmt").hidden = false;
+            document.getElementById("userpaid").setAttribute("required");
+        } else if (document.getElementById("ispaid").value == 0) {
+            document.getElementById("payAmt").hidden = true;
+            document.getElementById("userpaid").removeAttribute("required");
+        }
+    }
+</script>
+{% endblock %}

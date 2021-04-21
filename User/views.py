@@ -160,7 +160,6 @@ def dischargePatient(request):
         if request.method == 'POST':
             # if pid == "":
             ispaid = int(request.POST['ispaid'])
-            userpaid = float(request.POST['userpaid'])
             admissionObj = Admission.objects.filter(id=context['admission-id']).first()
             # else:
             #     admissionObj = Admission.objects.filter(id=pid).first()
@@ -168,6 +167,7 @@ def dischargePatient(request):
             admissionObj.prescription = request.POST['prescription']
             admissionObj.billamt = float(request.POST['billamt'])
             if ispaid == 1:
+                userpaid = float(request.POST['userpaid'])
                 admissionObj.billpaid = True
                 admissionObj.pendingbillamt = admissionObj.billamt - userpaid
                 if admissionObj.pendingbillamt < 0:
@@ -176,9 +176,9 @@ def dischargePatient(request):
             elif ispaid == 0:
                 admissionObj.billpaid = False
                 admissionObj.pendingbillamt = admissionObj.billamt
-                if userpaid:
-                    messages.warning(request, 'Here You Selected Patient didn\'t pay any Bill Amount But After You Filled Bill Amount That Patient Paid!')
-                    return redirect('/user/dischargePatient/?id='+str(admissionObj.id))
+                # if userpaid:
+                #     messages.warning(request, 'Here You Selected Patient didn\'t pay any Bill Amount But After You Filled Bill Amount That Patient Paid!')
+                #     return redirect('/user/dischargePatient/?id='+str(admissionObj.id))
 
             fs = FileSystemStorage()
             bill = request.FILES['bill']
@@ -684,16 +684,100 @@ def showHelpRequests(request):
         return redirect("/user/login/")
 
 
+def showHospitalDetails(request):
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == "NGOs":
+        context['tabTitle'] = "Hospital's Details"
+        if request.method == "GET":
+            try:
+                hospitalid = int(request.GET['id'])
+            except:
+                messages.warning(request, 'Invalid Request Parameter Used')
+                return redirect('user/showHelpRequests/')
+            hospital = Hospital.objects.filter(id=hospitalid).first()
+            context['hospital'] = hospital
+            return render(request, "User/showHospitalDetails.html", context=context)
+    else:
+        return redirect("/user/login/")
+
+
+def addNewBill(request):
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == "Hospitals":
+        context['tabTitle'] = "Add New Bill"
+        if request.method == "GET":
+            try:
+                admissionid = int(request.GET['id'])
+            except:
+                messages.warning(request, 'Invalid Request Parameter Used')
+                return redirect('user/showHelpRequests/')
+            admission = Admission.objects.filter(id=admissionid).first()
+            context['admission'] = admission
+            return render(request, "User/addNewBill.html", context=context)
+        elif request.method == "POST":
+            try:
+                admissionid = int(request.POST['admissionid'])
+                billamt = float(request.POST['billamt'])
+                ispaid = int(request.POST['ispaid'])
+                billDesc = request.POST['billDesc']
+            except:
+                messages.warning(request, 'Invalid Values filled!')
+                return redirect('user/showHelpRequests/')
+            admission = Admission.objects.filter(id=admissionid).first()
+            if admission is not None:
+                billObj = Bill()
+                billObj.admissionid = admission.id
+                billObj.billamt = billamt
+                if ispaid == 1:
+                    try:
+                        userpaid = float(request.POST['userpaid'])
+                    except:
+                        messages.warning(request, 'Invalid Values filled!')
+                        return redirect('user/showHelpRequests/')
+                    billObj.billpaid = True
+                    billObj.pendingbillamt = billamt - userpaid
+                elif ispaid == 0:
+                    billObj.billpaid = False
+                    billObj.pendingbillamt = billamt
+
+                fs = FileSystemStorage()
+                billPic = request.FILES['billPic']
+                billPicName = fs.save("Bill" + str(admission.id) + billPic.name, billPic)
+                billObj.billImg = "." + fs.url(billPicName)
+
+                admission.billamt += billObj.billamt
+                admission.pendingbillamt += billObj.pendingbillamt
+                # billPic = request.FILES['billPic']
+                # billFileName = fs.save("Bill_" + str(admission.id) + billPic.name, billPic)
+                # billObj.billImg = ".." + fs.url(billFileName)
+                billObj.timeofBillAddition = datetime.now()
+                billObj.billDesc = billDesc
+                billObj.save()
+                admission.save()
+                messages.success(request, f"New Bill Added Successfully!")
+                return redirect('/user/showPatient/' + str(admission.id) + '/')
+            else:
+                messages.warning(request, "Invalid Patient's Data Provided!")
+                return redirect('user/showHelpRequests/')
+    else:
+        return redirect("/user/login/")
+
+
 def showPatientHistory(request,pk):
-    if 'current-user' in request.session:
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == "Hospitals":
         if Hospital.objects.filter(id=request.session['current-user']).first() is not None:
             context['tabTitle'] = "Show Patient History"
             context['user'] = Hospital.objects.filter(id=request.session['current-user']).first()
             admissions = Admission.objects.filter(hospitalid=request.session['current-user'])
             admission = Admission.objects.filter(id=pk).first()
+            if admission.dischargeDate == "":
+                currHistoryFlag = True
+            else:
+                currHistoryFlag = False
+            bills = Bill.objects.filter(admissionid=admission.id)
             # for admission in admissions:
             #     if admission.id == pk:
             context['admission'] = admission
+            context['currHistoryFlag'] = currHistoryFlag
+            context['bills'] = bills
             return render(request, "User/patientHistoryView.html", context=context)
         else:
             return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
@@ -701,18 +785,16 @@ def showPatientHistory(request,pk):
         return redirect("/user/login/")
 
 
-
-# Past History Of User In Hospital Panel
-def usersPastHistoryInHospital(request,pk):
-
-    if 'current-user' in request.session:
+def usersPastHistoryInHospital(request, pk):
+    if 'current-user' in request.session and request.session['selectedTypeUser'] == "Hospitals":
         if Hospital.objects.filter(id=request.session['current-user']).first() is not None:
             context['tabTitle'] = "Show Patient History"
             context['user'] = Hospital.objects.filter(id=request.session['current-user']).first()
-            admissions = Admission.objects.filter(hospitalid=request.session['current-user'])
-
-            # for admission in admissions:
-            #     if admission.id == pk:
+            allAdmissions = Admission.objects.filter(hospitalid=request.session['current-user'])
+            admissions = []
+            for admission in allAdmissions:
+                if admission.dischargeDate != "":
+                    admissions.append(admission)
             context['admission'] = admissions
             context['pk'] = pk
             return render(request, "User/usersPastHistoryInHospital.html", context=context)
@@ -791,11 +873,12 @@ def showUserHistory(request,pk):
         if User.objects.filter(id=request.session['current-user']).first() is not None:
             context['tabTitle'] = "Show User History"
             context['user'] = User.objects.filter(id=request.session['current-user']).first()
-            admissions = Admission.objects.filter(hospitalid=request.session['current-user'])
             admission = Admission.objects.filter(id=pk).first()
+            bills = Bill.objects.filter(admissionid=admission.id)
             # for admission in admissions:
             #     if admission.id == pk:
             context['admission'] = admission
+            context['bills'] = bills
             return render(request, "User/userHistoryView.html", context=context)
         else:
             return redirect(context['appUsers']['profile'][request.session['selectedTypeUser']])
