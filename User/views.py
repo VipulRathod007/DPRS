@@ -261,7 +261,7 @@ def admitPatient(request):
                         messages.warning(request, f"This Patient is Already Admitted!")
                         return render(request, 'User/AdmitPatient.html', context=context)
             
-            admissionObj.report = ".." + fs.url(reportFileName)
+            admissionObj.report = fs.url(reportFileName)
             admissionObj.patientname = userObj.fname + ' ' + userObj.lname
             admissionObj.admitDate = datetime.now()
             admissionObj.hospitalname = hospitalObj.name
