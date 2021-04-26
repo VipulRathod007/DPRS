@@ -113,5 +113,5 @@ class HelpRequest(models.Model):
     isapproved = models.BooleanField(null=True)
     approvedamt = models.FloatField(default=0)
     requestedamt = models.FloatField()
-    requestdate = models.CharField(max_length=25, default="")
-    responsedate = models.CharField(max_length=25, default="")
+    requestdate = models.CharField(max_length=100, default="")
+    responsedate = models.CharField(max_length=100, default="")
