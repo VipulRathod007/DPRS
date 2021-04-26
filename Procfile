@@ -1,1 +1,1 @@
-web: gunicorn DPRS.wsgi.application --log-file -
+web: gunicorn DPRS.wsgi:application --log-file -
