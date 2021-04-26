@@ -1,0 +1,1 @@
+web: gunicorn DPRS.wsgi.application --log-file -
