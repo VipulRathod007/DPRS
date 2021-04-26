@@ -741,7 +741,7 @@ def addNewBill(request):
                 fs = FileSystemStorage()
                 billPic = request.FILES['billPic']
                 billPicName = fs.save("Bill" + str(admission.id) + billPic.name, billPic)
-                billObj.billImg = "." + fs.url(billPicName)
+                billObj.billImg = ".." + fs.url(billPicName)
 
                 admission.billamt += billObj.billamt
                 admission.pendingbillamt += billObj.pendingbillamt
