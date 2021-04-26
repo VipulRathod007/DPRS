@@ -711,7 +711,7 @@ def addNewBill(request):
                 return redirect('user/showHelpRequests/')
             admission = Admission.objects.filter(id=admissionid).first()
             context['admission'] = admission
-            return render(request, "User/addNewBill.html", context=context)
+            return render(request, "User/AddNewBill.html", context=context)
         elif request.method == "POST":
             try:
                 admissionid = int(request.POST['admissionid'])
