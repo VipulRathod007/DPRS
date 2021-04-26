@@ -587,7 +587,7 @@ def ngoHowMuchPay(request):
             helpRequest.approvedamt = helpamt
             admissionObj = Admission.objects.filter(id=helpRequest.admissionid).first()
             admissionObj.pendingbillamt -= helpamt
-            helpRequest.responsedate = datetime.today()
+            helpRequest.responsedate = datetime.today().date()
             helpRequest.isapproved = True
             helpRequest.save()
             admissionObj.save()
